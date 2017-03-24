@@ -40,6 +40,7 @@ def generate_config(request):
         else:
             print(device.errors)
             print(config.errors)
+            # test 2
     else:
         device = AccessSwitchForm(prefix='device')
         config = AccessSwitchConfigForm(prefix='config')
