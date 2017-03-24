@@ -37,21 +37,6 @@ def generate_config(request):
                     device_error = e
             else:
                 device_error = 'Host with this IP already exists'
-
-
-
-
-            # try:
-            #     if not AccessSwitchConfig.objects.filter(ip=cd2['ip']):
-            #         device_data.save()
-            #         config_data.save()
-            #
-            #     else:
-            #         device_error = 'Host with this IP already exists'
-            # except IntegrityError as e:
-            #     device_error = e
-
-
         else:
             print(device.errors)
             print(config.errors)
