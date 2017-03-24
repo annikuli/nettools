@@ -1,0 +1,115 @@
+{% block enable_mode %}
+{% endblock %}
+#
+system-view
+#
+ sysname {{ hostname }}
+#
+ clock timezone UFA add 05:00:00
+#
+ domain default enable tacacs
+#
+ loopback-detection enable
+ loopback-detection interval-time 5
+#
+ undo ip http enable
+#
+ transceiver phony-alarm-disable
+#
+ password-recovery enable
+#
+acl number 2990 name aclSNMP
+ rule 0 permit source 10.62.6.66 0
+ rule 5 permit source 10.62.7.77 0
+ rule 10 permit source 10.62.5.20 0
+ rule 15 permit source 10.62.7.88 0.0.0.7
+ rule 20 deny logging
+#
+vlan {{ mgmt_vlan }}
+ description ## MGMT
+#
+hwtacacs scheme tacacs_auth
+ primary authentication 10.62.5.5
+ primary authorization 10.62.5.5
+ primary accounting 10.62.5.5
+ key authentication cipher $c$3$FfIaow3QSzBLJkwiB+TC/BoXDiU6/IKp3qJpOg3Loy0=
+ key authorization cipher $c$3$0e6td7Fk6Uf47B6ysD0h3kZc0NJG4GBOqWWuprp1sVk=
+ key accounting cipher $c$3$mQL1yLNNE2wHGhRuE4jxF54WePoTCI7ZM1JIC4o3I+Q=
+ user-name-format without-domain
+#
+domain system
+ access-limit disable
+ state active
+ idle-cut disable
+ self-service-url disable
+domain tacacs
+ authentication default hwtacacs-scheme tacacs_auth local
+ authorization default hwtacacs-scheme tacacs_auth local
+ accounting default hwtacacs-scheme tacacs_auth local
+ access-limit disable
+ state active
+ idle-cut disable
+ self-service-url disable
+#
+user-group system
+ group-attribute allow-guest
+#
+local-user iptech
+ password cipher $c$3$vxLuovmmT+SuYq1y6XSfDFUoUree3EUY7DQCuE17vnImZShxapS2JdQ=
+ authorization-attribute level 3
+ service-type ssh telnet terminal
+#
+interface Vlan-interface{{ mgmt_vlan }}
+ description ## MGMT
+ ip address {{ip}} {{mask}}
+#
+{% if ports|int() == 8 %}
+{% block interfaces_8 %}
+{% endblock %}
+{% endif %}
+{% if ports|int() == 24 %}
+{% block interfaces_24 %}
+{% endblock %}
+{% endif %}
+#
+ip route-static 0.0.0.0 0.0.0.0 {{ gw }}
+#
+dhcp-snooping
+#
+info-center source default channel 2 log level debugging trap state off
+ info-center loghost 10.62.6.66 facility local6
+ undo info-center logfile enable
+#
+snmp-agent
+ snmp-agent local-engineid 383030303633413236353133324332333341374239373736
+ snmp-agent community read Zorkiy_glas_vidit_mnogoe acl 2990
+ snmp-agent sys-info contact noc@bashes.ru
+ snmp-agent sys-info location {{ snmp_location }}
+ snmp-agent sys-info version v2c v3
+ snmp-agent trap enable default-route
+#
+ ntp-service unicast-server 10.62.5.20
+#
+ ssh server enable
+#
+ load xml-configuration
+#
+user-interface aux 0
+ authentication-mode scheme
+user-interface vty 0 15
+ authentication-mode scheme
+ command authorization
+ command accounting
+ user privilege level 3
+#
+undo stp enable
+#
+undo interface Vlan1
+#
+undo ipv6
+Y
+#
+undo local-user admin
+#
+return
+#

@@ -1,0 +1,58 @@
+{% extends "hp1910_base.j2" %}
+
+{% block enable_mode %}
+_cmdline-mode on
+y
+512900
+{% endblock %}
+{% block interfaces_8 %}
+{% for interface in ACCESS_PORTS %}
+interface {{ interface }}
+ loopback-detection enable
+ loopback-detection action shutdown
+ broadcast-suppression pps 50
+ multicast-suppression pps 50
+ shutdown
+ #
+{% endfor %}
+interface GigabitEthernet1/0/9
+ port link-type trunk
+ combo enable copper
+ undo port trunk permit vlan 1
+ port trunk permit vlan 24
+ dhcp-snooping trust
+ stp disable
+ undo port auto-power-down
+ undo stp edged-port
+ #
+interface GigabitEthernet1/0/10
+ port link-type trunk
+ combo enable fiber
+ undo port trunk permit vlan 1
+ port trunk permit vlan 24
+ dhcp-snooping trust
+ stp disable
+ undo port auto-power-down
+ undo stp edged-port
+ #
+{% endblock %}
+{% block interfaces_24 %}
+{% for interface in hp1910_24_users %}
+interface {{ interface }}
+ loopback-detection enable
+ broadcast-suppression pps 50
+ multicast-suppression pps 50
+ #
+{% endfor %}
+{% for interface in hp1910_24_uplinks %}
+interface {{ interface }}
+ port link-type trunk
+ undo port trunk permit vlan 1
+ port trunk permit vlan 24
+ dhcp-snooping trust
+ stp disable
+ undo port auto-power-down
+ undo stp edged-port
+ #
+{% endfor %}
+{% endblock %}

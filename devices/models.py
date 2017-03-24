@@ -25,10 +25,11 @@ PO_LIST = (
 )
 
 PURCHASES_LIST = (
-    ('',''),
+    ('', ''),
     ('1272', 'Lot 1272'),
     ('pakasdu', 'PAK ASDU'),
 )
+
 
 class AccessSwitch(models.Model):
     """
