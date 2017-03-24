@@ -21,19 +21,37 @@ def generate_config(request):
                 purchase=cd['purchase'],
                 description=cd['description']
                 )
-            config_data = AccessSwitchConfig(
-                hostname=device_data,
-                mgmt_vlan = cd2['mgmt_vlan'],
-                ip = cd2['ip'],
-                mask = cd2['mask'],
-                gw = cd2['gw'],
-                snmp_location = cd2['snmp_location']
-            )
-            try:
-                device_data.save()
-                config_data.save()
-            except IntegrityError as e:
-                device_error = e
+            if not AccessSwitchConfig.objects.filter(ip=cd2['ip']):
+                try:
+                    device_data.save()
+                    config_data = AccessSwitchConfig(
+                        hostname=device_data,
+                        mgmt_vlan=cd2['mgmt_vlan'],
+                        ip=cd2['ip'],
+                        mask=cd2['mask'],
+                        gw=cd2['gw'],
+                        snmp_location=cd2['snmp_location']
+                    )
+                    config_data.save()
+                except IntegrityError as e:
+                    device_error = e
+            else:
+                device_error = 'Host with this IP already exists'
+
+
+
+
+            # try:
+            #     if not AccessSwitchConfig.objects.filter(ip=cd2['ip']):
+            #         device_data.save()
+            #         config_data.save()
+            #
+            #     else:
+            #         device_error = 'Host with this IP already exists'
+            # except IntegrityError as e:
+            #     device_error = e
+
+
         else:
             print(device.errors)
             print(config.errors)
