@@ -39,6 +39,7 @@
         <p id="template_name">{{ form.template_name }}</p>
         <label for="snmp_community">SNMP Community: <span class="label label-info">Optional</span></label>
         <input type="text" class="form-control" id="snmp_community" placeholder="snmp_community" name="form.snmp_community">
+        <label><input type="checkbox" value="True" name="status">Enabled</label>
         <button type="submit" class="btn btn-success">Add</button>
     </div>
 {% csrf_token %}

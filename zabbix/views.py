@@ -9,7 +9,7 @@ def add_host(request):
         form = DeviceForm(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
-            r = zabbix_add_host(cd['hostname'], cd['ip_address'], cd['group_name'], cd['template_name'], cd['snmp_community'])
+            r = zabbix_add_host(cd['hostname'], cd['ip_address'], cd['group_name'], cd['template_name'], cd['snmp_community'], cd['status'])
             if r is True:
                 added = True
             else:

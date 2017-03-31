@@ -1,4 +1,3 @@
-from jinja2 import Template
 from jinja2 import FileSystemLoader
 from jinja2.environment import Environment
 import os
@@ -31,11 +30,10 @@ def generator(model, ports, hostname, mgmt_vlan, ip, mask, gw, snmp_location):
 def generate_hp1910(ports, hostname, mgmt_vlan, ip, mask, gw, snmp_location):
     ACCESS_PORTS = ('Ethernet1/0/' + str(i+1) for i in range(8))
     UPLINK_PORTS = ('GigabitEthernet1/0/' + str(i) for i in range(9, 11))
-    print(os.path.dirname(os.path.abspath(__file__)))
     env = Environment()
     env.loader = FileSystemLoader(os.path.dirname(os.path.abspath(__file__)) + '/config_templates')
-    template = env.get_template('hp1910_interfaces.j2')
-    # with open('config_templates/hp1910_interfaces.j2', 'r') as file:
+    template = env.get_template('hp1910_details.j2')
+    # with open('config_templates/hp1910_details.j2', 'r') as file:
     #     temp = file.read()
     # template = Template(temp)
     variables = {
@@ -51,6 +49,6 @@ def generate_hp1910(ports, hostname, mgmt_vlan, ip, mask, gw, snmp_location):
     return template.render(variables)
 
 
-print(generate_hp1910('8', 'testhostname', '24', '1.1.1.1', '2.2.2.2', '3.3.3.3', 'test snmp loc'))
+# print(generate_hp1910('8', 'testhostname', '24', '1.1.1.1', '2.2.2.2', '3.3.3.3', 'test snmp loc'))
 
 # print(generator('hp1910', '8', 'testhostname', '24', '1.1.1.1', '2.2.2.2', '3.3.3.3', 'test snmp loc'))

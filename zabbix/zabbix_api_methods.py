@@ -102,7 +102,7 @@ def map_template_names(raw_name):
         return False
 
 
-def zabbix_add_host(hostname, ip_address, groups_list, template_name, snmp_community=DEFAULT_SNMP_COMMUNITY):
+def zabbix_add_host(hostname, ip_address, groups_list, template_name, snmp_community=DEFAULT_SNMP_COMMUNITY, status=ENABLED):
     """
     Add host to zabbix. do_request method in ZabbixAPI use 2 arguments:
         method - see full list on https://www.zabbix.com/documentation/3.2/manual/api
@@ -113,11 +113,20 @@ def zabbix_add_host(hostname, ip_address, groups_list, template_name, snmp_commu
     :param groups_list: list of tuples (GroupID, GroupName) from zabbix where host belongs to
     :param template_name: name of template for host
     :param snmp_community: str, SNMP community string, if not specified it is DEFAULT_SNMP_COMMUNITY
+    :param status: int, 0 - enabled, 1 - disabled
     :return: True if host added, Error message if not
     """
     gr_list = []
     for group in groups_list:
         gr_list.append({'groupid': group[0]})
+
+    if snmp_community == '':
+        snmp_community = DEFAULT_SNMP_COMMUNITY
+
+    if status:
+        device_status = 0
+    else:
+        device_status = 1
 
     template_name_mapped = map_template_names(template_name)
     template_id = zabbix_find_template(template_name_mapped)
@@ -150,6 +159,7 @@ def zabbix_add_host(hostname, ip_address, groups_list, template_name, snmp_commu
                 'value': snmp_community
             }
         ],
+        'status': device_status,
         }
     try:
         zapi.do_request('host.create', parameters)

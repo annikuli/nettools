@@ -31,9 +31,19 @@
             {% endfor %}
         </div>
     {% endif %}
-        {% if device_error %}
+    {% if device_error %}
         <div class="alert alert-danger">
             <strong>Error!</strong> {{ device_error }}
+        </div>
+    {% endif %}
+    {% if zabbix_error %}
+        <div class="alert alert-danger">
+            <strong>Error!</strong> {{ zabbix_error }}
+        </div>
+    {% endif %}
+    {% if added %}
+        <div class="alert alert-success">
+            <strong>Device added to Zabbix!</strong>
         </div>
     {% endif %}
 
@@ -54,6 +64,11 @@
         <label for="description">Description:</label>
         <input type="text" class="form-control" id="description" name="device-description">
 
+        <label for="group_name">Group:</label>
+        <p id="group_name">{{ zabbix.group_name }} </p>
+        <label for="template_name">Template:</label>
+        <p id="template_name">{{ zabbix.template_name }}</p>
+
         <label for="mgmt_vlan">MGMT vlan:</label>
         <input type="text" class="form-control" id="mgmt_vlan" name="config-mgmt_vlan">
         <label for="ip">MGMT ip:</label>
@@ -64,7 +79,11 @@
         <input type="text" class="form-control" id="gw" name="config-gw">
         <label for="snmp_location">SNMP location:</label>
         <input type="text" class="form-control" id="snmp_location" name="config-snmp_location">
+        <label for="snmp_community">SNMP Community: <span class="label label-info">Optional</span></label>
+        <input type="text" class="form-control" id="snmp_community" placeholder="snmp_community" name="zabbix-snmp_community">
+        <label><input type="checkbox" value="True" name="zabbix-status">Enabled</label>
         <button type="submit" class="btn btn-success">Add</button>
+</div>
     </div>
 {% csrf_token %}
  </form>

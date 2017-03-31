@@ -31,6 +31,16 @@ class DeviceForm(forms.Form):
     )
     template_name = forms.ChoiceField(choices=TEMPLATES, widget=forms.Select(attrs={'class': 'form-control'}))
     snmp_community = forms.CharField(max_length=30, required=False)
+    status = forms.BooleanField(initial=False, required=False)
+
+
+class ZabbixForm(forms.Form):
+    group_name = forms.MultipleChoiceField(
+        choices=zabbix_list_groups(),
+        widget=forms.SelectMultiple(attrs={'class': 'form-control'})
+    )
+    template_name = forms.ChoiceField(choices=TEMPLATES, widget=forms.Select(attrs={'class': 'form-control'}))
+    status = forms.BooleanField(initial=False, required=False)
 
 
 class AccessSwitchForm(forms.Form):
@@ -53,3 +63,4 @@ class AccessSwitchConfigForm(forms.Form):
     mask = forms.GenericIPAddressField()
     gw = forms.GenericIPAddressField()
     snmp_location = forms.CharField(max_length=50)
+    snmp_community = forms.CharField(max_length=50, required=False)

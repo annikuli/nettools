@@ -1,21 +1,27 @@
 from django.shortcuts import render
-from nettools.forms import AccessSwitchForm, AccessSwitchConfigForm
+from nettools.forms import AccessSwitchForm, AccessSwitchConfigForm, ZabbixForm
 from .models import AccessSwitch, AccessSwitchConfig
 from django.db import IntegrityError
 from .generator import generator
+from zabbix.zabbix_api_methods import zabbix_add_host
+
 
 def generate_config(request):
+    added = False
     device_error = False
+    zabbix_error = False
     generated_config = ''
     if request.method == 'POST':
         print('Info: Request method POST')
         device = AccessSwitchForm(request.POST, prefix='device')
         config = AccessSwitchConfigForm(request.POST, prefix='config')
+        zab = ZabbixForm(request.POST, prefix='zabbix')
 
-        if device.is_valid() and config.is_valid():
+        if device.is_valid() and config.is_valid() and zab.is_valid():
             print('Info: DEVICE AND CONFIG Forms are valid')
             cd = device.cleaned_data
             cd2 = config.cleaned_data
+            cd3 = zab.cleaned_data
             device_data = AccessSwitch(
                 hostname=cd['hostname'],
                 addition_date=cd['addition_date'],
@@ -50,6 +56,12 @@ def generate_config(request):
                         gw=cd2['gw'],
                         snmp_location=cd2['snmp_location']
                     )
+                    r = zabbix_add_host(cd['hostname'], cd2['ip'], cd3['group_name'], cd3['template_name'],
+                                        cd2['snmp_community'], cd3['status'])
+                    if r is True:
+                        added = True
+                    else:
+                        zabbix_error = r
                 except IntegrityError as e:
                     print('Error: {}'.format(e))
                     device_error = e
@@ -62,4 +74,13 @@ def generate_config(request):
         print('Info: Request method GET')
         device = AccessSwitchForm(prefix='device')
         config = AccessSwitchConfigForm(prefix='config')
-    return render(request, 'generate_config.html', {'device': device, 'config': config, 'device_error': device_error, 'generated_config':generated_config})
+        zab = ZabbixForm(prefix='zabbix')
+    return render(request, 'generate_config.html',
+                  {'device': device,
+                   'config': config,
+                   'zabbix': zab,
+                   'device_error': device_error,
+                   'generated_config':generated_config,
+                   'added': added,
+                   'zabbix_error': zabbix_error}
+                  )
