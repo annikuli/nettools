@@ -84,3 +84,13 @@ def generate_config(request):
                    'added': added,
                    'zabbix_error': zabbix_error}
                   )
+
+
+def display_db(request):
+    if 'o' in request.GET:
+        o = request.GET['o']
+        devices = AccessSwitchConfig.objects.all().prefetch_related('hostname').order_by(o)
+        # devices = AccessSwitchConfig.objects.all().prefetch_related('hostname').order_by('hostname__purchase')
+    else:
+        devices = AccessSwitchConfig.objects.all().prefetch_related('hostname').order_by('hostname')
+    return render(request, 'list.html', {'devices': devices})

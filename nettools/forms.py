@@ -3,7 +3,6 @@ from zabbix.zabbix_api_methods import zabbix_list_groups
 from django.forms.extras.widgets import SelectDateWidget
 from devices.models import ACCESS_MODELS_CHOICES, PORTS_NUMBER, PO_LIST, PURCHASES_LIST
 
-
 TEMPLATES = [('juniper', 'Juniper'),
              ('cisco', 'Cisco'),
              ('cisco asa', 'Cisco ASA'),

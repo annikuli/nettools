@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}List {% endblock%}
+
+
+{% block content %}
+
+    <div class="container">
+        <h2>Device List</h2>
+        <p>All devices in database:</p>
+        <form action="" method="get">
+        <div class="radio">
+          <label><input type="radio" value="hostname" name="o">name</label>
+        </div>
+        <div class="radio">
+          <label><input type="radio" value="ip" name="o">ip</label>
+        </div>
+            <input type="submit" value="Sort">
+        </form>
+        <table class="table">
+            <thead>
+              <tr>
+                  <th>Addition Date</th>
+                  <th>PO</th>
+                  <th>Hostname</th>
+                  <th>IP</th>
+                  <th>Model</th>
+                  <th>Purchase</th>
+                  <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for device in devices %}
+                <tr>
+                    <td>{{ device.hostname.addition_date }}</td>
+                    <td>{{ device.hostname.po }}</td>
+                    <td>{{ device.hostname }}</td>
+                    <td>{{ device.ip }}</td>
+                    <td>{{ device.hostname.model }}-{{ device.hostname.ports }}</td>
+                    <td>{{ device.hostname.purchase }}</td>
+                    <td>{{ device.hostname.description }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+   </div>
+{% csrf_token %}
+{% endblock %}

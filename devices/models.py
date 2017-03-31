@@ -54,7 +54,7 @@ class AccessSwitchConfig(models.Model):
     """
     Configuration parameters for access switches
     """
-    hostname = models.ForeignKey(AccessSwitch)
+    hostname = models.ForeignKey(AccessSwitch, related_name='switch')
     mgmt_vlan = models.PositiveIntegerField(verbose_name='MGMT Vlan')
     ip = models.GenericIPAddressField(verbose_name='MGMT IP', unique=True)
     mask = models.GenericIPAddressField(verbose_name='MGMT mask')
