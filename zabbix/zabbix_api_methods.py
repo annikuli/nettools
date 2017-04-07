@@ -119,9 +119,6 @@ def zabbix_add_host(hostname, ip_address, groups_list, template_name, snmp_commu
     gr_list = []
     for group in groups_list:
         gr_list.append({'groupid': group.split(',')[0]})
-        print(type(group))
-        print(groups_list)
-        print('gr_list = '.format(gr_list))
 
     if snmp_community == '':
         snmp_community = DEFAULT_SNMP_COMMUNITY

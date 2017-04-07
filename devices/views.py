@@ -1,9 +1,10 @@
+from django.db import IntegrityError
 from django.shortcuts import render
 from nettools.forms import AccessSwitchForm, AccessSwitchConfigForm, ZabbixForm
-from .models import AccessSwitch, AccessSwitchConfig
-from django.db import IntegrityError
-from .generator import generator
 from zabbix.zabbix_api_methods import zabbix_add_host
+
+from .generator import generator
+from .models import AccessSwitch, AccessSwitchConfig
 
 
 def generate_config(request):
@@ -56,8 +57,8 @@ def generate_config(request):
                         gw=cd2['gw'],
                         snmp_location=cd2['snmp_location']
                     )
-                    r = zabbix_add_host(cd['hostname'], cd2['ip'], cd3['group_name'], cd3['template_name'],
-                                        cd2['snmp_community'], cd3['status'])
+                    r = zabbix_add_host(cd['hostname'], cd2['ip'], cd3['group_name'], cd3['template_name'],  # TODO: add snmp community passing (maybe in add_host function too)
+                                        cd2['snmp_community'], cd3['status'])  # TODO: make addition to zabbix optional
                     if r is True:
                         added = True
                     else:

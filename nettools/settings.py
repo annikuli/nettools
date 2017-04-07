@@ -122,3 +122,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static',),)
+
+EMAIL_HOST = 'cas.bashes.ru'
+EMAIL_PORT = 25
+EMAIL_HOST_USER = 'zabbix@bashes.ru'
+EMAIL_HOST_PASSWORD = 'A54321!'
