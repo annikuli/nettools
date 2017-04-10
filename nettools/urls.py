@@ -23,5 +23,6 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^add/$', add_host),
     url(r'^generate/$', generate_config),
-    url(r'^list/$', display_db)
+    url(r'^list/$', display_db),
+    url(r'^$', add_host)
 ]
