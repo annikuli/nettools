@@ -8,11 +8,12 @@
     <link rel="stylesheet" href="{% static '/bootstrap/css/bootstrap.min.css' %}">
     <script type="text/javascript" src="{% static 'jquery.min.js' %}"></script>
     <script type="text/javascript" src="{% static '/bootstrap/js/bootstrap.min.js' %}"></script>
-
     <!-- Include the Multiselect plugin's CSS and JS: -->
     <script type="text/javascript" src="{% static 'js/bootstrap-multiselect.js' %}"></script>
     <link rel="stylesheet" href="{% static 'css/bootstrap-multiselect.css' %}" type="text/css"/>
+    <!-- Fancy Checkboxes snippet-->
     <link rel="stylesheet" href="{% static '/css/fancycheckboxes.css' %}">
+
 
     <nav class="navbar navbar-inverse">
         <div class="navbar-header">
@@ -22,11 +23,14 @@
             <ul class="nav navbar-nav">
                 <li><a href="/add/">Добавить узел в Zabbix<span class="sr-only">(current)</span></a></li>
                 <li><a class="btn btn-default disabled" href="/generate">Generate config</a></li>
-                <li><a class="btn btn-default disabled" href="/list">Device List</a></li>
+                <li><a href="/list">Оборудование</a></li>
             </ul>
         </div>
     </nav>
+
+
     {% block content %}
     {% endblock %}
+
 </body>
 </html>

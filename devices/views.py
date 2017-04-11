@@ -88,10 +88,13 @@ def generate_config(request):
 
 
 def display_db(request):
+    last_ordering = ''
     if 'o' in request.GET:
         o = request.GET['o']
+        last_ordering = o
+        print(last_ordering)
         devices = AccessSwitchConfig.objects.all().prefetch_related('hostname').order_by(o)
         # devices = AccessSwitchConfig.objects.all().prefetch_related('hostname').order_by('hostname__purchase')
     else:
         devices = AccessSwitchConfig.objects.all().prefetch_related('hostname').order_by('hostname')
-    return render(request, 'list.html', {'devices': devices})
+    return render(request, 'list.html', {'devices': devices,'last_ordering': last_ordering})

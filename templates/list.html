@@ -5,44 +5,80 @@
 
 {% block content %}
 
-    <div class="container">
-        <h2>Device List</h2>
-        <p>All devices in database:</p>
-        <form action="" method="get">
-        <div class="radio">
-          <label><input type="radio" value="hostname" name="o">name</label>
-        </div>
-        <div class="radio">
-          <label><input type="radio" value="ip" name="o">ip</label>
-        </div>
-            <input type="submit" value="Sort">
-        </form>
+<div class="container">
+    <h2>Оборудование</h2>
+    <br>
+
+    <form action="" method="get">
         <table class="table">
             <thead>
-              <tr>
-                  <th>Addition Date</th>
-                  <th>PO</th>
-                  <th>Hostname</th>
-                  <th>IP</th>
-                  <th>Model</th>
-                  <th>Purchase</th>
-                  <th>Description</th>
-              </tr>
+            <tr>
+                <th>
+                {% if last_ordering == "hostname__addition_date" %}
+                    <button class="btn btn-success" type="submit" name="o" value="-hostname__addition_date">Дата добавления</button>
+                {% else %}
+                    <button class="btn btn" type="submit" name="o" value="hostname__addition_date">Дата добавления</button>
+                {% endif %}
+                </th>
+                <th>
+                {% if last_ordering == "hostname__po" %}
+                    <button class="btn btn-success" type="submit" name="o" value="-hostname__po">ПО</button>
+                {% else %}
+                    <button class="btn" type="submit" name="o" value="hostname__po">ПО</button>
+                {% endif %}
+                </th>
+                <th>
+                {% if last_ordering == "hostname__hostname" %}
+                    <button class="btn btn-success" type="submit" name="o" value="-hostname__hostname">Hostname</button>
+                {% else %}
+                    <button class="btn" type="submit" name="o" value="hostname__hostname">Hostname</button>
+                {% endif %}
+                </th>
+                <th>
+                {% if last_ordering == "ip" %}
+                    <button class="btn btn-success" type="submit" name="o" value="-ip">IP</button>
+                {% else %}
+                    <button class="btn" type="submit" name="o" value="ip">IP</button>
+                {% endif %}
+                </th>
+                <th>
+                {% if last_ordering == "hostname__model" %}
+                    <button class="btn btn-success" type="submit" name="o" value="-hostname__model">Модель</button>
+                {% else %}
+                    <button class="btn" type="submit" name="o" value="hostname__model">Модель</button>
+                {% endif %}
+                </th>
+                <th>
+                {% if last_ordering == "hostname__purchase" %}
+                    <button class="btn btn-success" type="submit" name="o" value="-hostname__purchase">Закупка</button>
+                {% else %}
+                    <button class="btn" type="submit" name="o" value="hostname__purchase">Закупка</button>
+                {% endif %}
+                </th>
+                <th>
+                {% if last_ordering == "hostname__description" %}
+                    <button class="btn btn-success" type="submit" name="o" value="-hostname__description">Комментарий</button>
+                {% else %}
+                    <button class="btn" type="submit" name="o" value="hostname__description">Комментарий</button>
+                {% endif %}
+                </th>
+            </tr>
             </thead>
             <tbody>
-                {% for device in devices %}
-                <tr>
-                    <td>{{ device.hostname.addition_date }}</td>
-                    <td>{{ device.hostname.po }}</td>
-                    <td>{{ device.hostname }}</td>
-                    <td>{{ device.ip }}</td>
-                    <td>{{ device.hostname.model }}-{{ device.hostname.ports }}</td>
-                    <td>{{ device.hostname.purchase }}</td>
-                    <td>{{ device.hostname.description }}</td>
-                </tr>
-                {% endfor %}
+            {% for device in devices %}
+            <tr>
+                <td>{{ device.hostname.addition_date }}</td>
+                <td>{{ device.hostname.po }}</td>
+                <td>{{ device.hostname }}</td>
+                <td>{{ device.ip }}</td>
+                <td>{{ device.hostname.model }}-{{ device.hostname.ports }}</td>
+                <td>{{ device.hostname.purchase }}</td>
+                <td>{{ device.hostname.description }}</td>
+            </tr>
+            {% endfor %}
             </tbody>
         </table>
-   </div>
+    </form>
+</div>
 {% csrf_token %}
 {% endblock %}
