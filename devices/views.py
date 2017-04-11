@@ -7,6 +7,7 @@ from .generator import generator
 from .models import AccessSwitch, AccessSwitchConfig
 
 
+
 def generate_config(request):
     added = False
     device_error = False
@@ -19,7 +20,7 @@ def generate_config(request):
         zab = ZabbixForm(request.POST, prefix='zabbix')
 
         if device.is_valid() and config.is_valid() and zab.is_valid():
-            print('Info: DEVICE AND CONFIG Forms are valid')
+            print('Info: DEVICE AND CONFIG AND ZABBIX Forms are valid')
             cd = device.cleaned_data
             cd2 = config.cleaned_data
             cd3 = zab.cleaned_data

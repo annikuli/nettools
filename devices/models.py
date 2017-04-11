@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.db import models
 
 
@@ -12,22 +13,23 @@ PORTS_NUMBER = (
 )
 
 PO_LIST = (
-    ('BcES', 'PO BcES'),
-    ('BES', 'PO BES'),
-    ('CES', 'PO CES'),
-    ('IES', 'PO IES'),
-    ('KES', 'PO KES'),
-    ('NES', 'PO NES'),
-    ('OES', 'PO OES'),
-    ('SVES', 'PO SVES'),
-    ('SES', 'PO SES'),
-    ('UGES', 'PO UGES'),
+    ('BcES', 'ПО БцЭС'),
+    ('BES', 'ПО БЭС'),
+    ('CES', 'ПО ЦЭС'),
+    ('IES', 'ПО ИЭС'),
+    ('KES', 'ПО КЭС'),
+    ('NES', 'ПО НЭС'),
+    ('OES', 'ПО ОЭС'),
+    ('SVES', 'ПО СВЭС'),
+    ('SES', 'ПО СЭС'),
+    ('UGES', 'ПО УГЭС'),
+    ('TARGIN', 'Таргин')
 )
 
 PURCHASES_LIST = (
     ('', ''),
-    ('1272', 'Lot 1272'),
-    ('pakasdu', 'PAK ASDU'),
+    ('1272', 'Лот 1272'),
+    ('pakasdu', 'ПАК АСДУ'),
 )
 
 
