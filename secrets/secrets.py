@@ -5,3 +5,4 @@ ZABBIX_PASSWORD = "zabbixpass"
 DEFAULT_SNMP_COMMUNITY = "Zorkiy_glas_vidit_mnogoe"
 ENABLED = False
 ZABBIX_EMAIL_DESTINATIONS = ['nikulinad@bashkirenergo.ru']
+ZABBIX_EMAIL_SOURCE = 'zabbix@bashkirenergo.ru'
