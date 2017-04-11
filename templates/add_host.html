@@ -35,17 +35,17 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Новый узел</div>
                 <div class="panel-body">
-                    <div class="col-xs-10">
                         <label for="hostname">Hostname:</label>
                         <input type="text" class="form-control" id="hostname" name="hostname">
                         <label for="ip_address">IP address:</label>
                         <input type="text" class="form-control" id="ip_address"  name="ip_address">
-                        <label for="group_name">Группа (Ctrl+, чтобы выбрать несколько):</label>
+                        <label for="group_name">Группа:</label>
                         <p id="group_name">{{ form.group_name }} </p>
                         <label for="template_name">Шаблон:</label>
                         <p id="template_name">{{ form.template_name }}</p>
+                        <hr>
                         <label for="snmp_community">SNMP Community: <span class="label label-info">Optional</span></label>
-                        <input type="text" class="form-control" id="snmp_community"  name="form.snmp_community">
+                        <input type="text" class="form-control" id="snmp_community" placeholder="Zorkiy_glas_vidit_mnogoe" name="snmp_community">
                         <br>
                         <div class="[ form-group ]">
                             <input type="checkbox" name="status" id="fancy-checkbox-default" autocomplete="off" />
@@ -60,8 +60,7 @@
                                 </div>
                         </div>
                         <br>
-                        <button type="submit" class="btn btn-success">Add</button>
-                    </div>
+                        <button type="submit" class="btn btn-success btn-block">Добавить в Zabbix</button>
                 </div>
             </div>
       </div>
