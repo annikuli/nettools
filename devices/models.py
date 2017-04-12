@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from django.db import models
+import datetime
 
-
-ACCESS_MODELS_CHOICES = (
+DEVICE_MODELS_CHOICES = (
     ('hp1910', 'HP 1910'),
 )
 
@@ -28,9 +28,30 @@ PO_LIST = (
 
 PURCHASES_LIST = (
     ('', ''),
-    ('1272', 'Лот 1272'),
-    ('pakasdu', 'ПАК АСДУ'),
+    ('Лот 1272', 'Лот 1272'),
+    ('ПАК АСДУ', 'ПАК АСДУ'),
 )
+
+
+class Device(models.Model):
+    """
+    Device template
+    """
+    hostname = models.CharField(max_length=30, verbose_name='Hostname', unique=True)
+    ip = models.GenericIPAddressField(verbose_name='MGMT IP', unique=True)
+    addition_date = models.DateField(verbose_name='Addition date', default=datetime.date.today)
+    model = models.CharField(max_length=20, choices=DEVICE_MODELS_CHOICES, verbose_name='Model')
+    ports = models.PositiveIntegerField(choices=PORTS_NUMBER, verbose_name='Ports number')
+    po = models.CharField(max_length=10, choices=PO_LIST, verbose_name='PO name')
+    purchase = models.CharField(max_length=20, choices=PURCHASES_LIST, blank=True)
+    description = models.TextField(max_length=200, blank=True)
+
+    def __str__(self):
+        return self.hostname
+
+    class Meta:
+        ordering = ['-addition_date']
+
 
 
 class AccessSwitch(models.Model):
@@ -39,7 +60,7 @@ class AccessSwitch(models.Model):
     """
     hostname = models.CharField(max_length=30, verbose_name='Hostname', unique=True)
     addition_date = models.DateField(verbose_name='Addition date')
-    model = models.CharField(max_length=20, choices=ACCESS_MODELS_CHOICES, verbose_name='Model')
+    model = models.CharField(max_length=20, choices=DEVICE_MODELS_CHOICES, verbose_name='Model')
     ports = models.PositiveIntegerField(choices=PORTS_NUMBER, verbose_name='Ports number')
     po = models.CharField(max_length=10, choices=PO_LIST, verbose_name='PO name')
     purchase = models.CharField(max_length=20, choices=PURCHASES_LIST, blank=True)

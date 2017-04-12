@@ -10,28 +10,36 @@
     <br>
 
     <form action="" method="get">
+        <div class="input-group">
+            <input type="text"  name="q" class="form-control" placeholder="hostname">
+            <div class="input-group-btn">
+                <button class="btn btn-default" type="submit">
+                    <i class="glyphicon glyphicon-search"></i>
+                </button>
+            </div>
+        </div>
         <table class="table">
             <thead>
             <tr>
                 <th>
-                {% if last_ordering == "hostname__addition_date" %}
-                    <button class="btn btn-success" type="submit" name="o" value="-hostname__addition_date">Дата добавления</button>
+                {% if last_ordering == "addition_date" %}
+                    <button class="btn btn-success" type="submit" name="o" value="-addition_date">Дата добавления</button>
                 {% else %}
-                    <button class="btn btn" type="submit" name="o" value="hostname__addition_date">Дата добавления</button>
+                    <button class="btn btn" type="submit" name="o" value="addition_date">Дата добавления</button>
                 {% endif %}
                 </th>
                 <th>
-                {% if last_ordering == "hostname__po" %}
-                    <button class="btn btn-success" type="submit" name="o" value="-hostname__po">ПО</button>
+                {% if last_ordering == "po" %}
+                    <button class="btn btn-success" type="submit" name="o" value="-po">ПО</button>
                 {% else %}
-                    <button class="btn" type="submit" name="o" value="hostname__po">ПО</button>
+                    <button class="btn" type="submit" name="o" value="po">ПО</button>
                 {% endif %}
                 </th>
                 <th>
-                {% if last_ordering == "hostname__hostname" %}
-                    <button class="btn btn-success" type="submit" name="o" value="-hostname__hostname">Hostname</button>
+                {% if last_ordering == "hostname" %}
+                    <button class="btn btn-success" type="submit" name="o" value="-hostname">Hostname</button>
                 {% else %}
-                    <button class="btn" type="submit" name="o" value="hostname__hostname">Hostname</button>
+                    <button class="btn" type="submit" name="o" value="hostname">Hostname</button>
                 {% endif %}
                 </th>
                 <th>
@@ -42,42 +50,45 @@
                 {% endif %}
                 </th>
                 <th>
-                {% if last_ordering == "hostname__model" %}
-                    <button class="btn btn-success" type="submit" name="o" value="-hostname__model">Модель</button>
+                {% if last_ordering == "model" %}
+                    <button class="btn btn-success" type="submit" name="o" value="-model">Модель</button>
                 {% else %}
-                    <button class="btn" type="submit" name="o" value="hostname__model">Модель</button>
+                    <button class="btn" type="submit" name="o" value="model">Модель</button>
                 {% endif %}
                 </th>
                 <th>
-                {% if last_ordering == "hostname__purchase" %}
-                    <button class="btn btn-success" type="submit" name="o" value="-hostname__purchase">Закупка</button>
+                {% if last_ordering == "purchase" %}
+                    <button class="btn btn-success" type="submit" name="o" value="-purchase">Закупка</button>
                 {% else %}
-                    <button class="btn" type="submit" name="o" value="hostname__purchase">Закупка</button>
+                    <button class="btn" type="submit" name="o" value="purchase">Закупка</button>
                 {% endif %}
                 </th>
                 <th>
-                {% if last_ordering == "hostname__description" %}
-                    <button class="btn btn-success" type="submit" name="o" value="-hostname__description">Комментарий</button>
+                {% if last_ordering == "description" %}
+                    <button class="btn btn-success" type="submit" name="o" value="-description">Комментарий</button>
                 {% else %}
-                    <button class="btn" type="submit" name="o" value="hostname__description">Комментарий</button>
+                    <button class="btn" type="submit" name="o" value="description">Комментарий</button>
                 {% endif %}
                 </th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
             {% for device in devices %}
             <tr>
-                <td>{{ device.hostname.addition_date }}</td>
-                <td>{{ device.hostname.po }}</td>
+                <td>{{ device.addition_date }}</td>
+                <td>{{ device.po }}</td>
                 <td>{{ device.hostname }}</td>
                 <td>{{ device.ip }}</td>
-                <td>{{ device.hostname.model }}-{{ device.hostname.ports }}</td>
-                <td>{{ device.hostname.purchase }}</td>
-                <td>{{ device.hostname.description }}</td>
+                <td>{{ device.model }}-{{ device.ports }}</td>
+                <td>{{ device.purchase }}</td>
+                <td>{{ device.description }}</td>
+                <td><input type="checkbox" name="del" value={{ device.hostname }}></td>
             </tr>
             {% endfor %}
             </tbody>
         </table>
+        <button type="submit" class="btn btn-success btn-block">del</button>
     </form>
 </div>
 {% csrf_token %}

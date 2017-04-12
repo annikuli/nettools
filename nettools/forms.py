@@ -1,7 +1,8 @@
 from django import forms
+from devices.models import Device
 from zabbix.zabbix_api_methods import zabbix_list_groups
 from django.forms.extras.widgets import SelectDateWidget
-from devices.models import ACCESS_MODELS_CHOICES, PORTS_NUMBER, PO_LIST, PURCHASES_LIST
+from devices.models import DEVICE_MODELS_CHOICES, PORTS_NUMBER, PO_LIST, PURCHASES_LIST
 
 TEMPLATES = [('juniper', 'Juniper'),
              ('cisco', 'Cisco'),
@@ -19,7 +20,16 @@ TEMPLATES = [('juniper', 'Juniper'),
              ]
 
 
-class DeviceForm(forms.Form):
+class DeviceForm(forms.ModelForm):
+    class Meta:
+        model = Device
+        fields = ['hostname', 'ip', 'addition_date', 'model', 'ports', 'po', 'purchase', 'description']
+        widgets = {
+            'addition_date': SelectDateWidget(empty_label="Nothing"),
+        }
+
+
+class DeviceFormZabbix(forms.Form):
     hostname = forms.CharField(max_length=30)
     ip_address = forms.GenericIPAddressField()
     group_name = forms.MultipleChoiceField(
@@ -43,7 +53,7 @@ class ZabbixForm(forms.Form):
 class AccessSwitchForm(forms.Form):
     hostname = forms.CharField(max_length=30)
     addition_date = forms.DateField(widget=SelectDateWidget(empty_label="Nothing"))
-    model = forms.ChoiceField(choices=ACCESS_MODELS_CHOICES, widget=forms.Select(attrs={'class': 'form-control'}))
+    model = forms.ChoiceField(choices=DEVICE_MODELS_CHOICES, widget=forms.Select(attrs={'class': 'form-control'}))
     ports = forms.ChoiceField(choices=PORTS_NUMBER, widget=forms.Select(attrs={'class': 'form-control'}))
     po = forms.ChoiceField(choices=PO_LIST, widget=forms.Select(attrs={'class': 'form-control'}))
     purchase = forms.ChoiceField(

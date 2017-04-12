@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from zabbix.views import add_host
-from devices.views import generate_config, display_db
+from devices.views import generate_config, display_db, create_device
 
 
 urlpatterns = [
@@ -24,5 +24,6 @@ urlpatterns = [
     url(r'^add/$', add_host),
     url(r'^generate/$', generate_config),
     url(r'^list/$', display_db),
-    url(r'^$', add_host)
+    url(r'^$', add_host),
+    url(r'^create/$', create_device)
 ]
