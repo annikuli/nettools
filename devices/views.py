@@ -2,24 +2,55 @@ from django.db import IntegrityError
 from django.shortcuts import render
 from nettools.forms import AccessSwitchForm, AccessSwitchConfigForm, ZabbixForm, DeviceForm
 from zabbix.zabbix_api_methods import zabbix_add_host
+from django.core.mail import send_mail
 
 from .generator import generator
 from .models import AccessSwitch, AccessSwitchConfig, Device
+from secrets.secrets import ZABBIX_EMAIL_DESTINATIONS, ZABBIX_EMAIL_SOURCE
 
 
 def create_device(request):
     added = False
+    r = False
     errors = []
+    zabbix_enabled = False
+    zabbix = ''
+
+    if request.method == 'GET':
+        if 'zabbix_enabled' in request.GET:
+            zabbix_enabled = request.GET['zabbix_enabled']
     if request.method == 'POST':
         print('Info: Request method POST')
         device = DeviceForm(request.POST, prefix='device')
+
         if device.is_valid():
             print('Info: DEVICE Form is valid')
-            # cd_device = device.cleaned_data
+            cd_device = device.cleaned_data
+            zabbix = ZabbixForm(request.POST, prefix='zabbix')
+            if zabbix.is_valid():
+                zabbix_enabled = True
+                print('Info: Addition to Zabbix enabled')
+                cd_zabbix = zabbix.cleaned_data
+                r = zabbix_add_host(cd_device['hostname'], cd_device['ip'], cd_zabbix['group_name'],
+                                    cd_zabbix['template_name'], cd_zabbix['snmp_community'], cd_zabbix['status'])
+            else:
+                print(zabbix.errors)
             try:
-                device.save()
-                print('Info: DEVICE data saved in Device DB.')
-                added = True
+                if zabbix_enabled:
+                    if r is True:
+                        device.save()
+                        added = True
+                        print('Info: DEVICE data saved in Device DB. And DEVICE added in Zabbix')
+                        message = 'Добавлено новое устройство:' + '\n\n' + str(cd_device['ip']) + ' ' + str(cd_device['hostname'])
+                        send_mail('Zabbix. Новое устройство.', message, ZABBIX_EMAIL_SOURCE, ZABBIX_EMAIL_DESTINATIONS)
+                    else:
+                        print('Error: DEVICE data does not saved in Device DB because of error while adding in Zabbix')
+                        errors.append(r.split('.')[1][2:] + ' in Zabbix')
+                else:
+                    device.save()
+                    added = True
+                    print('Info: DEVICE data saved in Device DB.')
+
             except Exception as e:
                 print('Error: DEVICE data has not been saved in Device DB.')
                 print('Error: {}'.format(e))
@@ -30,7 +61,9 @@ def create_device(request):
     else:
         print('Info: Request method GET')
         device = DeviceForm(prefix='device')
-    return render(request, 'create_device.html', {'device':device, 'errors': errors, 'added': added})
+        if zabbix_enabled:
+            zabbix = ZabbixForm(prefix='zabbix')
+    return render(request, 'create_device.html', {'device': device, 'zabbix': zabbix, 'errors': errors, 'added': added, 'zabbix_enabled': zabbix_enabled})
 
 
 def generate_config(request):
@@ -107,7 +140,7 @@ def generate_config(request):
                    'config': config,
                    'zabbix': zab,
                    'device_error': device_error,
-                   'generated_config':generated_config,
+                   'generated_config': generated_config,
                    'added': added,
                    'zabbix_error': zabbix_error}
                   )
@@ -135,18 +168,59 @@ def display_db(request):
         except Exception as e:
             print('Error: "{}" can not be removed from Device DB.'.format(d))
             print('Error: {}'.format(e))
-    elif 'q' in request.GET:
-        search = request.GET['q']
-        print('Info: Searching for "{}" in Device DB.'.format(search))
-        devices = Device.objects.filter(hostname__icontains=search)
-    elif 'o' in request.GET:
+    if 'o' in request.GET:
         o = request.GET['o']
         last_ordering = o
-        print(last_ordering)
+        # print(last_ordering)
         devices = Device.objects.all().order_by(o)
+        print('Info: Ordering by {}'.format(o))
         # devices = AccessSwitchConfig.objects.all().prefetch_related('hostname').order_by('hostname__purchase')
+    elif 'q_po' in request.GET:
+        search = request.GET['q_po']
+        if search != '':
+            print('Info: Searching for "{}" in Device DB.'.format(search))
+            devices = Device.objects.filter(po__icontains=search)
+        else:
+            devices = Device.objects.all().order_by('-addition_date')
+            print('Info: Backup Default output.')
+    elif 'q_model' in request.GET:
+        search = request.GET['q_model']
+        if search != '':
+            print('Info: Searching for "{}" in Device DB.'.format(search))
+            devices = Device.objects.filter(model__icontains=search)
+        else:
+            devices = Device.objects.all().order_by('-addition_date')
+            print('Info: Backup Default output.')
+    elif 'q_ports' in request.GET:
+        search = request.GET['q_ports']
+        if search != '':
+            print('Info: Searching for "{}" in Device DB.'.format(search))
+            devices = Device.objects.filter(ports__icontains=search)
+        else:
+            devices = Device.objects.all().order_by('-addition_date')
+            print('Info: Backup Default output.')
+    elif 'q_purchase' in request.GET:
+        search = request.GET['q_purchase']
+        if search != '':
+            print('Info: Searching for "{}" in Device DB.'.format(search))
+            devices = Device.objects.filter(purchase__icontains=search)
+        else:
+            devices = Device.objects.all().order_by('-addition_date')
+            print('Info: Backup Default output.')
+    elif 'q' and 'q_ip' in request.GET:
+        search = request.GET['q']
+        search_ip = request.GET['q_ip']
+        if search != '':
+            print('Info: Searching for "{}" in Device DB.'.format(search))
+            devices = Device.objects.filter(hostname__icontains=search)
+        elif search_ip != '':
+            print('Info: Searching for "{}" in Device DB.'.format(search))
+            devices = Device.objects.filter(ip__icontains=search_ip)
+        else:
+            devices = Device.objects.all().order_by('-addition_date')
+            print('Info: Backup Default output.')
     else:
         devices = Device.objects.all().order_by('-addition_date')
-
+        print('Info: Default output.')
 
     return render(request, 'list.html', {'devices': devices, 'last_ordering': last_ordering})

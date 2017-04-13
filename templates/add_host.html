@@ -2,13 +2,8 @@
 
 {% block title %}add host {% endblock%}
 
-{% block content %}
-    {% if added %}
-        <div class="alert alert-success">
-            <strong>Success!</strong> Host added.
-        </div>
-    {% endif %}
 
+{% block error_block %}
     {% if zabbix_error %}
         <div class="alert alert-danger">
             <strong>Error!</strong> {{ zabbix_error }}
@@ -27,13 +22,22 @@
             {% endfor %}
         </div>
     {% endif %}
+{% endblock %}
+
+
+{% block content %}
+    {% if added %}
+        <div class="alert alert-success">
+            <strong>Success!</strong> Host added.
+        </div>
+    {% endif %}
 
  <form action="" method="post">
      <div class="row">
       <div class="col-sm-4"></div>
       <div class="col-sm-4">
             <div class="panel panel-default">
-                <div class="panel-heading">Новый узел</div>
+                <div class="panel-heading">Добавить устройство в Zabbix</div>
                 <div class="panel-body">
                         <label for="hostname">Hostname:</label>
                         <input type="text" class="form-control" id="hostname" name="hostname">

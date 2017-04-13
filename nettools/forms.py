@@ -37,7 +37,7 @@ class DeviceFormZabbix(forms.Form):
         widget=forms.SelectMultiple(attrs={'class': 'form-control'})
     )
     template_name = forms.ChoiceField(choices=TEMPLATES, widget=forms.Select(attrs={'class': 'form-control'}))
-    snmp_community = forms.CharField(max_length=30, required=False)
+
     status = forms.BooleanField(initial=False, required=False)
 
 
@@ -47,7 +47,9 @@ class ZabbixForm(forms.Form):
         widget=forms.SelectMultiple(attrs={'class': 'form-control'})
     )
     template_name = forms.ChoiceField(choices=TEMPLATES, widget=forms.Select(attrs={'class': 'form-control'}))
+    snmp_community = forms.CharField(max_length=30, required=False)
     status = forms.BooleanField(initial=False, required=False)
+
 
 
 class AccessSwitchForm(forms.Form):

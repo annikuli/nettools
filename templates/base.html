@@ -13,11 +13,12 @@
     <link rel="stylesheet" href="{% static 'css/bootstrap-multiselect.css' %}" type="text/css"/>
     <!-- Fancy Checkboxes snippet-->
     <link rel="stylesheet" href="{% static '/css/fancycheckboxes.css' %}">
-
+    <!-- Font Awesome snippet-->
+    <link rel="stylesheet" href="{% static '/font-awesome-4.7.0/css/font-awesome.min.css' %}" type="text/css">
 
     <nav class="navbar navbar-inverse">
         <div class="navbar-header">
-            <a class="navbar-brand" href="">Home</a>
+            <a class="navbar-brand" href="/list">Home</a>
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
@@ -26,12 +27,13 @@
                 <li><a href="/list">Оборудование</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="/add/">Добавить узел в Zabbix<span class="sr-only">(current)</span></a></li>
+                <li><a href="/add/">Добавить устройство в Zabbix<span class="sr-only">(current)</span></a></li>
             </ul>
         </div>
     </nav>
 
-
+    {% block error_block %}
+    {% endblock %}
     {% block content %}
     {% endblock %}
 

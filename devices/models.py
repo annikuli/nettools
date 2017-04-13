@@ -9,7 +9,7 @@ DEVICE_MODELS_CHOICES = (
 PORTS_NUMBER = (
     (8, '8'),
     (16, '16'),
-    (24, '24'),
+    (24, '24')
 )
 
 PO_LIST = (
@@ -27,7 +27,7 @@ PO_LIST = (
 )
 
 PURCHASES_LIST = (
-    ('', ''),
+    # ('', ''),
     ('Лот 1272', 'Лот 1272'),
     ('ПАК АСДУ', 'ПАК АСДУ'),
 )
@@ -42,7 +42,7 @@ class Device(models.Model):
     addition_date = models.DateField(verbose_name='Addition date', default=datetime.date.today)
     model = models.CharField(max_length=20, choices=DEVICE_MODELS_CHOICES, verbose_name='Model')
     ports = models.PositiveIntegerField(choices=PORTS_NUMBER, verbose_name='Ports number')
-    po = models.CharField(max_length=10, choices=PO_LIST, verbose_name='PO name')
+    po = models.CharField(max_length=10, choices=sorted(PO_LIST, key=lambda tup: tup[1]), verbose_name='PO name')
     purchase = models.CharField(max_length=20, choices=PURCHASES_LIST, blank=True)
     description = models.TextField(max_length=200, blank=True)
 

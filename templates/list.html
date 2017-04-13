@@ -5,91 +5,118 @@
 
 {% block content %}
 
-<div class="container">
+<!--<div class="container">-->
     <h2>Оборудование</h2>
     <br>
-
     <form action="" method="get">
-        <div class="input-group">
-            <input type="text"  name="q" class="form-control" placeholder="hostname">
-            <div class="input-group-btn">
-                <button class="btn btn-default" type="submit">
-                    <i class="glyphicon glyphicon-search"></i>
-                </button>
+    <div class="row">
+        <div class="col-sm-2">
+            <div class="panel panel-default">
+                 <div class="panel-heading">Поиск</div>
+                 <div class="panel-body">
+                    <div class="input-group">
+                        <input type="text"  name="q" class="form-control" placeholder="hostname">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" type="submit">
+                                <i class="glyphicon glyphicon-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                     <br>
+                    <div class="input-group">
+                        <input type="text"  name="q_ip" class="form-control" placeholder="ip">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" type="submit">
+                                <i class="glyphicon glyphicon-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                 </div>
             </div>
         </div>
-        <table class="table">
-            <thead>
-            <tr>
-                <th>
-                {% if last_ordering == "addition_date" %}
-                    <button class="btn btn-success" type="submit" name="o" value="-addition_date">Дата добавления</button>
-                {% else %}
-                    <button class="btn btn" type="submit" name="o" value="addition_date">Дата добавления</button>
-                {% endif %}
-                </th>
-                <th>
-                {% if last_ordering == "po" %}
-                    <button class="btn btn-success" type="submit" name="o" value="-po">ПО</button>
-                {% else %}
-                    <button class="btn" type="submit" name="o" value="po">ПО</button>
-                {% endif %}
-                </th>
-                <th>
-                {% if last_ordering == "hostname" %}
-                    <button class="btn btn-success" type="submit" name="o" value="-hostname">Hostname</button>
-                {% else %}
-                    <button class="btn" type="submit" name="o" value="hostname">Hostname</button>
-                {% endif %}
-                </th>
-                <th>
-                {% if last_ordering == "ip" %}
-                    <button class="btn btn-success" type="submit" name="o" value="-ip">IP</button>
-                {% else %}
-                    <button class="btn" type="submit" name="o" value="ip">IP</button>
-                {% endif %}
-                </th>
-                <th>
-                {% if last_ordering == "model" %}
-                    <button class="btn btn-success" type="submit" name="o" value="-model">Модель</button>
-                {% else %}
-                    <button class="btn" type="submit" name="o" value="model">Модель</button>
-                {% endif %}
-                </th>
-                <th>
-                {% if last_ordering == "purchase" %}
-                    <button class="btn btn-success" type="submit" name="o" value="-purchase">Закупка</button>
-                {% else %}
-                    <button class="btn" type="submit" name="o" value="purchase">Закупка</button>
-                {% endif %}
-                </th>
-                <th>
-                {% if last_ordering == "description" %}
-                    <button class="btn btn-success" type="submit" name="o" value="-description">Комментарий</button>
-                {% else %}
-                    <button class="btn" type="submit" name="o" value="description">Комментарий</button>
-                {% endif %}
-                </th>
-                <th></th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for device in devices %}
-            <tr>
-                <td>{{ device.addition_date }}</td>
-                <td>{{ device.po }}</td>
-                <td>{{ device.hostname }}</td>
-                <td>{{ device.ip }}</td>
-                <td>{{ device.model }}-{{ device.ports }}</td>
-                <td>{{ device.purchase }}</td>
-                <td>{{ device.description }}</td>
-                <td><input type="checkbox" name="del" value={{ device.hostname }}></td>
-            </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-        <button type="submit" class="btn btn-success btn-block">del</button>
+        <div class="col-md-8">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>
+                    {% if last_ordering == "addition_date" %}
+                        <button class="btn btn-success" type="submit" name="o" value="-addition_date">Дата добавления</button>
+                    {% else %}
+                        <button class="btn btn" type="submit" name="o" value="addition_date">Дата добавления</button>
+                    {% endif %}
+                    </th>
+                    <th>
+                    {% if last_ordering == "po" %}
+                        <button class="btn btn-success" type="submit" name="o" value="-po">ПО</button>
+                    {% else %}
+                        <button class="btn" type="submit" name="o" value="po">ПО</button>
+                    {% endif %}
+                    </th>
+                    <th>
+                    {% if last_ordering == "hostname" %}
+                        <button class="btn btn-success" type="submit" name="o" value="-hostname">Hostname</button>
+                    {% else %}
+                        <button class="btn" type="submit" name="o" value="hostname">Hostname</button>
+                    {% endif %}
+                    </th>
+                    <th>
+                    {% if last_ordering == "ip" %}
+                        <button class="btn btn-success" type="submit" name="o" value="-ip">IP</button>
+                    {% else %}
+                        <button class="btn" type="submit" name="o" value="ip">IP</button>
+                    {% endif %}
+                    </th>
+                    <th>
+                    {% if last_ordering == "model" %}
+                        <button class="btn btn-success" type="submit" name="o" value="-model">Модель</button>
+                    {% else %}
+                        <button class="btn" type="submit" name="o" value="model">Модель</button>
+                    {% endif %}
+                    </th>
+                    <th>
+                    {% if last_ordering == "ports" %}
+                        <button class="btn btn-success" type="submit" name="o" value="-ports"># портов</button>
+                    {% else %}
+                        <button class="btn" type="submit" name="o" value="ports"># портов</button>
+                    {% endif %}
+                    </th>
+                    <th>
+                    {% if last_ordering == "purchase" %}
+                        <button class="btn btn-success" type="submit" name="o" value="-purchase">Закупка</button>
+                    {% else %}
+                        <button class="btn" type="submit" name="o" value="purchase">Закупка</button>
+                    {% endif %}
+                    </th>
+                    <th>
+                    {% if last_ordering == "description" %}
+                        <button class="btn btn-success" type="submit" name="o" value="-description">Комментарий</button>
+                    {% else %}
+                        <button class="btn" type="submit" name="o" value="description">Комментарий</button>
+                    {% endif %}
+                    </th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for device in devices %}
+                <tr>
+                    <td>{{ device.addition_date }}</td>
+                    <td><button type="submit" class="btn btn-link" name="q_po" value={{ device.po }}>{{ device.po }}</td>
+                    <td>{{ device.hostname }}</td>
+                    <td>{{ device.ip }}</td>
+                    <td><button type="submit" class="btn btn-link" name="q_model" value={{ device.model }}>{{ device.model }}</td>
+                    <td><button type="submit" class="btn btn-link" name="q_ports" value={{ device.ports }}>{{ device.ports }}</td>
+                    <td><button type="submit" class="btn btn-link" name="q_purchase" value={{ device.purchase }}>{{ device.purchase }}</td>
+                    <td>{{ device.description }}</td>
+                    <td><button type="submit" name="del" value={{ device.hostname }} class="btn btn-danger btn-block btn-xs" onclick="return confirm('Are you sure?')"><i class="fa fa-trash-o fa-lg"></i> Удалить</button></td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
     </form>
-</div>
+<!--</div>-->
 {% csrf_token %}
 {% endblock %}
