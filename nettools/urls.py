@@ -24,6 +24,6 @@ urlpatterns = [
     url(r'^add/$', add_host),
     url(r'^generate/$', generate_config),
     url(r'^list/$', display_db),
-    url(r'^$', add_host),
+    url(r'^$', display_db),
     url(r'^create/$', create_device)
 ]
