@@ -19,6 +19,8 @@ TEMPLATES = [('juniper', 'Juniper'),
              ('qtech', 'Qtech'),
              ]
 
+CONFIG_MODEL_CHOICES = [('hp1910-8', 'HP 1910-8')]
+
 
 class DeviceForm(forms.ModelForm):
     class Meta:
@@ -67,6 +69,8 @@ class AccessSwitchForm(forms.Form):
 
 
 class AccessSwitchConfigForm(forms.Form):
+    hostname = forms.CharField(max_length=30)
+    model = forms.ChoiceField(choices=CONFIG_MODEL_CHOICES, widget=forms.Select(attrs={'class': 'form-control'}))
     mgmt_vlan = forms.IntegerField(max_value=4096)
     ip = forms.GenericIPAddressField()
     mask = forms.GenericIPAddressField()

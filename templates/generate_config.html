@@ -3,21 +3,7 @@
 {% block title %}Generate Config {% endblock%}
 
 {% block content %}
-        {% if device.errors %}
-        <div class="alert alert-danger">
-            <strong>Error!</strong> Please correct the error{{ device.errors|pluralize }} below.
-            {% for field in device %}
-              {% if field.errors %}
-                {% for error in field.errors %}
-                <ul>
-                  <li>{{ field.name }} - {{ error|escape }}</li>
-                </ul>
-                {% endfor %}
-              {% endif %}
-            {% endfor %}
-        </div>
-    {% endif %}
-        {% if config.errors %}
+{% if config.errors %}
         <div class="alert alert-danger">
             <strong>Error!</strong> Please correct the error{{ device.errors|pluralize }} below.
             {% for field in config %}
@@ -30,70 +16,39 @@
               {% endif %}
             {% endfor %}
         </div>
-    {% endif %}
-    {% if device_error %}
-        <div class="alert alert-danger">
-            <strong>Error!</strong> {{ device_error }}
-        </div>
-    {% endif %}
-    {% if zabbix_error %}
-        <div class="alert alert-danger">
-            <strong>Error!</strong> {{ zabbix_error }}
-        </div>
-    {% endif %}
-    {% if added %}
-        <div class="alert alert-success">
-            <strong>Device added to Zabbix!</strong>
-        </div>
-    {% endif %}
+{% endif %}
 
- <form action="" method="post">
-    <div class="col-xs-4">
-        <label for="hostname">Hostname:</label>
-        <input type="text" class="form-control" id="hostname" placeholder="hostname" name="device-hostname">
-        <label for="addition_date">Addition date:</label>
-        <p id="addition_date">{{ device.addition_date }} </p>
-        <label for="model">Model:</label>
-        <p id="model">{{ device.model }} </p>
-        <label for="ports">Port number:</label>
-        <p id="ports">{{ device.ports }}</p>
-        <label for="po">PO:</label>
-        <p id="po">{{ device.po }}</p>
-        <label for="purchase">Purchase:</label>
-        <p id="purchase">{{ device.purchase }}</p>
-        <label for="description">Description:</label>
-        <input type="text" class="form-control" id="description" name="device-description">
 
-        <label for="group_name">Group:</label>
-        <p id="group_name">{{ zabbix.group_name }} </p>
-        <label for="template_name">Template:</label>
-        <p id="template_name">{{ zabbix.template_name }}</p>
-
-        <label for="mgmt_vlan">MGMT vlan:</label>
-        <input type="text" class="form-control" id="mgmt_vlan" name="config-mgmt_vlan">
-        <label for="ip">MGMT ip:</label>
-        <input type="text" class="form-control" id="ip" name="config-ip">
-        <label for="mask">MGMT mask:</label>
-        <input type="text" class="form-control" id="mask" name="config-mask">
-        <label for="gw">MGMT gw:</label>
-        <input type="text" class="form-control" id="gw" name="config-gw">
-        <label for="snmp_location">SNMP location:</label>
-        <input type="text" class="form-control" id="snmp_location" name="config-snmp_location">
-        <label for="snmp_community">SNMP Community: <span class="label label-info">Optional</span></label>
-        <input type="text" class="form-control" id="snmp_community" placeholder="snmp_community" name="zabbix-snmp_community">
-        <label><input type="checkbox" value="True" name="zabbix-status">Enabled</label>
-        <button type="submit" class="btn btn-success">Add</button>
-</div>
+     <div class="row">
+        <div class="col-sm-2">
+            <form action="" method="post">
+            <div class="panel panel-default">
+                 <div class="panel-heading">Параметры</div>
+                 <div class="panel-body">
+                    <label for="hostname">Hostname:</label>
+                    <input type="text" class="form-control" id="hostname" placeholder="hostname" name="config-hostname">
+                    <label for="model">Модель:</label>
+                    <p id="model">{{ config.model }} </p>
+                    <label for="mgmt_vlan">MGMT Vlan:</label>
+                    <input type="text" class="form-control" id="mgmt_vlan" name="config-mgmt_vlan">
+                    <label for="ip">MGMT IP:</label>
+                    <input type="text" class="form-control" id="ip" name="config-ip">
+                    <label for="mask">MGMT Mask:</label>
+                    <input type="text" class="form-control" id="mask" name="config-mask">
+                    <label for="gw">MGMT Gateway:</label>
+                    <input type="text" class="form-control" id="gw" name="config-gw">
+                    <label for="snmp_location">SNMP location:</label>
+                    <input type="text" class="form-control" id="snmp_location" name="config-snmp_location">
+                    <!--<label for="snmp_community">SNMP Community: <span class="label label-info">Optional</span></label>-->
+                    <!--<input type="text" class="form-control" id="snmp_community" placeholder="snmp_community" name="zabbix-snmp_community">-->
+                    <button type="submit" class="btn btn-success">Сгенерировать конфигурацию</button>
+                 </div>
+            </div>
+            {% csrf_token %}
+        </form>
+        </div>
+        <div class="col-sm-8">
+            <pre>{{ generated_config}}</pre>
+        </div>
     </div>
-{% csrf_token %}
- </form>
-
-<pre>{{ generated_config}}</pre>
-<!--<form action="" method="post">-->
-        <!--<table>-->
-            <!--{{ device.as_table }}-->
-        <!--</table>-->
-        <!--{% csrf_token %}-->
-        <!--<input type="submit" value="Submit">-->
-    <!--</form>-->
 {% endblock %}

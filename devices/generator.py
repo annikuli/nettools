@@ -3,13 +3,12 @@ from jinja2.environment import Environment
 import os
 
 
-def generator(model, ports, hostname, mgmt_vlan, ip, mask, gw, snmp_location):
+def generator(model,  hostname, mgmt_vlan, ip, mask, gw, snmp_location):
     """
     Detects device model and call right function to generate config. And return complete config as string.
     Assumes that IP addresses and VLAN numbers are correct
 
     :param model: str, device model from request
-    :param ports: str, port number from request
     :param hostname: str, hostname from request
     :param mgmt_vlan: str, MGMT Vlan number from request
     :param ip: str, MGMT IP from request
@@ -19,8 +18,8 @@ def generator(model, ports, hostname, mgmt_vlan, ip, mask, gw, snmp_location):
     :return: str, FULL config
     """
     config = ""
-    if model == 'hp1910':
-        config = generate_hp1910(ports, hostname, mgmt_vlan, ip, mask, gw, snmp_location)
+    if model == 'hp1910-8':
+        config = generate_hp1910('8', hostname, mgmt_vlan, ip, mask, gw, snmp_location)
     if config:
         return config
     else:
