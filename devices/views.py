@@ -41,7 +41,7 @@ def create_device(request):
                         device.save()
                         added = True
                         print('Info: DEVICE data saved in Device DB. And DEVICE added in Zabbix')
-                        message = 'Добавлено новое устройство:' + '\n\n' + str(cd_device['ip']) + ' ' + str(cd_device['hostname'])
+                        message = 'Добавлено новое устройство:' + '\n\n' + str(cd_device['ip']) + ' ' + str(cd_device['hostname'] + '\n\n' + str(cd_device['description']))
                         send_mail('Zabbix. Новое устройство.', message, ZABBIX_EMAIL_SOURCE, ZABBIX_EMAIL_DESTINATIONS)
                     else:
                         print('Error: DEVICE data does not saved in Device DB because of error while adding in Zabbix')
