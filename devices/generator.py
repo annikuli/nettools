@@ -1,9 +1,10 @@
 from jinja2 import FileSystemLoader
 from jinja2.environment import Environment
+from secrets.secrets import DEFAULT_SNMP_COMMUNITY
 import os
 
 
-def generator(model,  hostname, mgmt_vlan, ip, mask, gw, snmp_location):
+def generator(model,  hostname, mgmt_vlan, ip, mask, gw, snmp_location, snmp_community=DEFAULT_SNMP_COMMUNITY):
     """
     Detects device model and call right function to generate config. And return complete config as string.
     Assumes that IP addresses and VLAN numbers are correct
@@ -15,20 +16,24 @@ def generator(model,  hostname, mgmt_vlan, ip, mask, gw, snmp_location):
     :param mask: str, MGMT Mask from request
     :param gw: str, MGMT gateway from request
     :param snmp_location: str, SNMP location from request
+    :param snmp_community: str, SNMP community from request
     :return: str, FULL config
     """
     config = ""
+    if snmp_community == '':
+        snmp_community = DEFAULT_SNMP_COMMUNITY
     if model == 'hp1910-8':
-        config = generate_hp1910('8', hostname, mgmt_vlan, ip, mask, gw, snmp_location)
+        config = generate_hp1910('8', hostname, mgmt_vlan, ip, mask, gw, snmp_location, snmp_community)
+    elif model == 'hp1910-24':
+        config = generate_hp1910('24', hostname, mgmt_vlan, ip, mask, gw, snmp_location, snmp_community)
     if config:
         return config
     else:
         return "Error: Config for {} was not generated.".format(model)
 
 
-def generate_hp1910(ports, hostname, mgmt_vlan, ip, mask, gw, snmp_location):
-    ACCESS_PORTS = ('Ethernet1/0/' + str(i+1) for i in range(8))
-    UPLINK_PORTS = ('GigabitEthernet1/0/' + str(i) for i in range(9, 11))
+def generate_hp1910(ports, hostname, mgmt_vlan, ip, mask, gw, snmp_location, snmp_community):
+    ACCESS_PORTS = ('Ethernet1/0/' + str(i+1) for i in range(int(ports)))
     env = Environment()
     env.loader = FileSystemLoader(os.path.dirname(os.path.abspath(__file__)) + '/config_templates')
     template = env.get_template('hp1910_details.j2')
@@ -43,6 +48,7 @@ def generate_hp1910(ports, hostname, mgmt_vlan, ip, mask, gw, snmp_location):
         'mask': mask,
         'gw': gw,
         'snmp_location': snmp_location,
+        'snmp_community': snmp_community,
         'ACCESS_PORTS': ACCESS_PORTS
     }
     return template.render(variables)

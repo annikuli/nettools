@@ -37,16 +37,16 @@ interface GigabitEthernet1/0/10
  #
 {% endblock %}
 {% block interfaces_24 %}
-{% for interface in hp1910_24_users %}
+{% for interface in ACCESS_PORTS %}
 interface {{ interface }}
  loopback-detection enable
  broadcast-suppression pps 50
  multicast-suppression pps 50
  #
 {% endfor %}
-{% for interface in hp1910_24_uplinks %}
-interface {{ interface }}
+interface GigabitEthernet1/0/25
  port link-type trunk
+ combo enable copper
  undo port trunk permit vlan 1
  port trunk permit vlan 24
  dhcp-snooping trust
@@ -54,5 +54,14 @@ interface {{ interface }}
  undo port auto-power-down
  undo stp edged-port
  #
-{% endfor %}
+interface GigabitEthernet1/0/26
+ port link-type trunk
+ combo enable fiber
+ undo port trunk permit vlan 1
+ port trunk permit vlan 24
+ dhcp-snooping trust
+ stp disable
+ undo port auto-power-down
+ undo stp edged-port
+ #
 {% endblock %}

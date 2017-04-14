@@ -83,7 +83,7 @@ def generate_config(request):
                 mask=cd_config['mask'],
                 gw=cd_config['gw'],
                 snmp_location=cd_config['snmp_location'],
-                # snmp_community=cd_config['snmp_community']
+                snmp_community=cd_config['snmp_community']
                 )
         else:
             print('Error: CONFIG Form is not valid')

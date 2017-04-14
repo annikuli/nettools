@@ -19,7 +19,9 @@ TEMPLATES = [('juniper', 'Juniper'),
              ('qtech', 'Qtech'),
              ]
 
-CONFIG_MODEL_CHOICES = [('hp1910-8', 'HP 1910-8')]
+CONFIG_MODEL_CHOICES = [('hp1910-8', 'HP 1910-8'),
+                        ('hp1910-24', 'HP 1910-24')
+                        ]
 
 
 class DeviceForm(forms.ModelForm):

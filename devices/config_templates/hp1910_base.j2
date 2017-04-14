@@ -82,7 +82,7 @@ info-center source default channel 2 log level debugging trap state off
 #
 snmp-agent
  snmp-agent local-engineid 383030303633413236353133324332333341374239373736
- snmp-agent community read Zorkiy_glas_vidit_mnogoe acl 2990
+ snmp-agent community read {{ snmp_community }} acl 2990
  snmp-agent sys-info contact noc@bashes.ru
  snmp-agent sys-info location {{ snmp_location }}
  snmp-agent sys-info version v2c v3

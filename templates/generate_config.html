@@ -2,7 +2,8 @@
 
 {% block title %}Generate Config {% endblock%}
 
-{% block content %}
+
+{% block error_block %}
 {% if config.errors %}
         <div class="alert alert-danger">
             <strong>Error!</strong> Please correct the error{{ device.errors|pluralize }} below.
@@ -17,31 +18,33 @@
             {% endfor %}
         </div>
 {% endif %}
-
-
+{% endblock %}
+{% block content %}
      <div class="row">
         <div class="col-sm-2">
             <form action="" method="post">
             <div class="panel panel-default">
                  <div class="panel-heading">Параметры</div>
                  <div class="panel-body">
-                    <label for="hostname">Hostname:</label>
-                    <input type="text" class="form-control" id="hostname" placeholder="hostname" name="config-hostname">
-                    <label for="model">Модель:</label>
-                    <p id="model">{{ config.model }} </p>
-                    <label for="mgmt_vlan">MGMT Vlan:</label>
-                    <input type="text" class="form-control" id="mgmt_vlan" name="config-mgmt_vlan">
-                    <label for="ip">MGMT IP:</label>
-                    <input type="text" class="form-control" id="ip" name="config-ip">
-                    <label for="mask">MGMT Mask:</label>
-                    <input type="text" class="form-control" id="mask" name="config-mask">
-                    <label for="gw">MGMT Gateway:</label>
-                    <input type="text" class="form-control" id="gw" name="config-gw">
-                    <label for="snmp_location">SNMP location:</label>
-                    <input type="text" class="form-control" id="snmp_location" name="config-snmp_location">
-                    <!--<label for="snmp_community">SNMP Community: <span class="label label-info">Optional</span></label>-->
-                    <!--<input type="text" class="form-control" id="snmp_community" placeholder="snmp_community" name="zabbix-snmp_community">-->
-                    <button type="submit" class="btn btn-success">Сгенерировать конфигурацию</button>
+                     <label for="model">Модель:</label>
+                     <p id="model">{{ config.model }} </p>
+                     <label for="hostname">Hostname:</label>
+                     <input type="text" class="form-control" id="hostname" placeholder="hostname" name="config-hostname">
+                     <label for="mgmt_vlan">MGMT Vlan:</label>
+                     <input type="text" class="form-control" id="mgmt_vlan" name="config-mgmt_vlan">
+                     <label for="ip">MGMT IP:</label>
+                     <input type="text" class="form-control" id="ip" name="config-ip">
+                     <label for="mask">MGMT Mask:</label>
+                     <input type="text" class="form-control" id="mask" name="config-mask">
+                     <label for="gw">MGMT Gateway:</label>
+                     <input type="text" class="form-control" id="gw" name="config-gw">
+                     <label for="snmp_location">SNMP location:</label>
+                     <input type="text" class="form-control" id="snmp_location" name="config-snmp_location">
+                     <hr>
+                     <label for="snmp_community">SNMP Community: <span class="label label-info">Optional</span></label>
+                     <input type="text" class="form-control" id="snmp_community" placeholder="Zorkiy_glas_vidit_mnogoe" name="config-snmp_community">
+                     <br>
+                     <button type="submit" class="btn btn-success">Сгенерировать конфигурацию</button>
                  </div>
             </div>
             {% csrf_token %}
@@ -51,4 +54,9 @@
             <pre>{{ generated_config}}</pre>
         </div>
     </div>
+
+<script type="text/javascript">
+    $('#id_config-model').multiselect();
+</script>
+
 {% endblock %}
