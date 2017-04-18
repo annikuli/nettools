@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}Vsi {% endblock%}
+
+
+{% block content %}
+
+<div class="container">
+    <h2>VSI</h2>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-sm-2">
+        </div>
+        <div class="col-md-8">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th><p>Addition Date</p></th>
+                    <th><p>Name</p></th>
+                    <th><p>ID</p></th>
+                    <th><p>Description</p></th>
+                    <th><p>Switches</p></th>
+                </tr>
+                {% for vsi in vsis %}
+                <tr>
+                    <td>{{ vsi.addition_date }}</td>
+                    <td>{{ vsi.name }}</td>
+                    <td>{{ vsi.vsi_id |stringformat:"04d"}}</td>
+                    <td>{{ vsi.description }}</td>
+                    <td>
+                    <ul>
+                        {% for switch in vsi.switch.all %}
+                        <li>{{ switch }}</li>
+                    {% endfor %}
+                    </ul>
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

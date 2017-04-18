@@ -3,6 +3,7 @@ from devices.models import Device
 from zabbix.zabbix_api_methods import zabbix_list_groups
 from django.forms.extras.widgets import SelectDateWidget
 from devices.models import DEVICE_MODELS_CHOICES, PORTS_NUMBER, PO_LIST, PURCHASES_LIST
+from vsi.models import Vsi
 
 TEMPLATES = [('juniper', 'Juniper'),
              ('cisco', 'Cisco'),
@@ -28,6 +29,15 @@ class DeviceForm(forms.ModelForm):
     class Meta:
         model = Device
         fields = ['hostname', 'ip', 'addition_date', 'model', 'ports', 'po', 'purchase', 'description']
+        widgets = {
+            'addition_date': SelectDateWidget(empty_label="Nothing"),
+        }
+
+
+class VsiForm(forms.ModelForm):
+    class Meta:
+        model = Vsi
+        fields = ['name', 'vsi_id', 'switch', 'description', 'addition_date']
         widgets = {
             'addition_date': SelectDateWidget(empty_label="Nothing"),
         }
