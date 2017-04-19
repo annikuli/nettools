@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+
+{% block title %}Create Device {% endblock%}
+
+
+{% block error_block %}
+    {% if errors %}
+        <div class="alert alert-danger">
+            <strong>Error!</strong>
+            {% for error in errors %}
+              <li>{{ error }} </li>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% if device.errors %}
+        <div class="alert alert-danger">
+            <strong>Error!</strong> Please correct the error{{ device.errors|pluralize }} below.
+            {% for field in device %}
+              {% if field.errors %}
+                {% for error in field.errors %}
+                  <li>{{ field.name }} - {{ error|escape }}</li>
+                {% endfor %}
+              {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+
+{% endblock %}
+    {% block content %}
+        {% if added %}
+            <div class="alert alert-success">
+                <strong>Success!</strong> Устройство добавленно.
+            </div>
+        {% endif %}
+
+ <form action="" method="post">
+     <div class="row">
+         <div class="col-sm-4">
+             <div class="panel panel-default">
+                 <div class="panel-heading">Параметры нового устройства</div>
+                 <div class="panel-body">
+                     <label for="addition_date">Дата добавления:</label>
+                     <p id="addition_date">{{ device.addition_date }} </p>
+                     <label for="hostname">Hostname:</label>
+                     <input type="text" class="form-control" id="hostname" name="device-hostname">
+                     <label for="ip">IP address:</label>
+                     <input type="text" class="form-control" id="ip" name="device-ip">
+                     <label for="model">Модель:</label>
+                     <p id="model">{{ device.model }} </p>
+                     <label for="ports">Количество портов:</label>
+                     <p id="ports">{{ device.ports }}</p>
+                     <label for="po">ПО:</label>
+                     <p id="po">{{ device.po }}</p>
+                     <label for="purchase">Закупка:</label>
+                     <p id="purchase">{{ device.purchase }}</p>
+                     <hr>
+                     <label for="description">Комментарий: <span class="label label-info">Optional</span></label>
+                     <input type="text" class="form-control" id="description" name="device-description">
+                 </div>
+             </div>
+
+         {% if not zabbix_enabled %}
+         <button type="submit" class="btn btn-success btn-block">Создать</button>
+         </div>
+         {% csrf_token %}
+         </form>
+         <div class="col-sm-4">
+             <form action="" method="get">
+                 <div>
+                     <button type="submit" name="zabbix_enabled" value="True" class="btn btn-default btn-block">Параметры Zabbix</button>
+                 </div>
+                 {% csrf_token %}
+             </form>
+         </div>
+         {% endif %}
+        {% if zabbix_enabled %}
+        <button type="submit" class="btn btn-success btn-block">Создать</button>
+        </div>
+        <div class="col-sm-4">
+             <div class="panel panel-default">
+                 <div class="panel-heading">Параметры Zabbix</div>
+                 <div class="panel-body">
+                 <label for="group_name">Группа:</label>
+                 <p id="group_name">{{ zabbix.group_name }} </p>
+                 <label for="template_name">Шаблон:</label>
+                 <p id="template_name">{{ zabbix.template_name }}</p>
+                 <hr>
+                 <label for="snmp_community">SNMP Community: <span class="label label-info">Optional</span></label>
+                 <input type="text" class="form-control" id="snmp_community" placeholder="Zorkiy_glas_vidit_mnogoe" name="zabbix-snmp_community">
+                 <br>
+                 <div class="[ form-group ]">
+                     <input type="checkbox" name="status" id="fancy-checkbox-default" autocomplete="off" />
+                     <div class="[ btn-group ]">
+                         <label for="fancy-checkbox-default" class="[ btn btn-default ]">
+                             <span class="[ glyphicon glyphicon-ok ]"></span>
+                             <span> </span>
+                         </label>
+                         <label for="fancy-checkbox-default" class="[ btn btn-default active ]">
+                             Сделать активным в Zabbix
+                         </label>
+                     </div>
+                 </div>
+                 </div>
+             </div>
+        </div>
+        {% endif %}
+        <div class="col-sm-4"></div>
+     </div>
+
+
+{% csrf_token %}
+ </form>
+<br>
+
+<script type="text/javascript">
+    $('#id_device-model').multiselect();
+    $('#id_device-ports').multiselect();
+    $('#id_device-po').multiselect();
+    $('#id_device-purchase').multiselect();
+    $('#id_zabbix-group_name').multiselect();
+    $('#id_zabbix-template_name').multiselect();
+</script>
+
+
+{% endblock %}
