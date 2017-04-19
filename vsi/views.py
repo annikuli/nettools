@@ -7,5 +7,4 @@ from .models import Vsi
 def display_all_vsi(request):
     vsis = Vsi.objects.all()
     print('Info: Default output.')
-    print(vsis)
     return render(request, 'vsi.html', {'vsis':vsis})

@@ -4,6 +4,7 @@ from zabbix.zabbix_api_methods import zabbix_list_groups
 from django.forms.extras.widgets import SelectDateWidget
 from devices.models import DEVICE_MODELS_CHOICES, PORTS_NUMBER, PO_LIST, PURCHASES_LIST
 from vsi.models import Vsi
+from phones.models import Contact
 
 TEMPLATES = [('juniper', 'Juniper'),
              ('cisco', 'Cisco'),
@@ -41,6 +42,12 @@ class VsiForm(forms.ModelForm):
         widgets = {
             'addition_date': SelectDateWidget(empty_label="Nothing"),
         }
+
+
+class ContactForm(forms.ModelForm):
+    class Meta:
+        model = Contact
+        fields = ['name', 'organization', 'phone_number', 'email', 'description']
 
 
 class DeviceFormZabbix(forms.Form):

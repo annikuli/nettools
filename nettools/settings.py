@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'zabbix',
     'devices',
-    'vsi'
+    'vsi',
+    'phones'
 ]
 
 MIDDLEWARE = [
