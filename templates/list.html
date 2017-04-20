@@ -109,7 +109,7 @@
                     <td><button type="submit" class="btn btn-link" name="q_ports" value={{ device.ports }}>{{ device.ports }}</td>
                     <td><button type="submit" class="btn btn-link" name="q_purchase" value={{ device.purchase }}>{{ device.purchase }}</td>
                     <td>{{ device.description }}</td>
-                    <td><button type="submit" name="del" value={{ device.hostname }} class="btn btn-danger btn-block btn-xs" onclick="return confirm('Are you sure?')"><i class="fa fa-trash-o fa-lg"></i> Удалить</button></td>
+                    <td><button type="submit" name="del" value={{ device.hostname }} class="btn btn-danger btn-block btn-xs" onclick="return confirm('Are you sure?')"><i class="fa fa-trash-o fa-lg"></i></button></td>
                 </tr>
                 {% endfor %}
                 </tbody>

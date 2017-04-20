@@ -71,18 +71,21 @@
                     <th><p>Комментарий</p></th>
                     <th><p>E-Mail</p></th>
                     <th></th>
+                    <th></th>
                 </tr>
+                </thead>
                 {% for contact in contacts %}
+                <tbody>
                 {% if contact.id|slugify == edit_id|slugify %}
                 <tr>
                     <form action="" method="post">
-                    <td><input type="text" class="form-control" name="update-phone_number" value={{ contact.phone_number }}></td>
-                    <td><input type="text" class="form-control" name="update-name" value={{ contact.name }}></td>
-                    <td><input type="text" class="form-control" name="update-organization" value={{ contact.organization }}></td>
-                    <td><input type="text" class="form-control" name="update-description" value={{ contact.description }}></td>
-                    <td><input type="text" class="form-control" name="update-email" value={{ contact.email }}></td>
-                    <td><button type="submit" name="new" value={{ contact.id }} class="btn btn-success btn-block btn-xs"><i class="fa fa-check" aria-hidden="true"></i> Обновить</button></td>
-                    <td><a href="/phones" class="btn  btn-block btn-xs"><i class="fa fa-times-circle-o" aria-hidden="true"></i> Отмена</a></td>
+                    <td><input type="text"  name="update-phone_number" value={{ contact.phone_number }}></td>
+                    <td><input type="text"  name="update-name" value={{ contact.name }}></td>
+                    <td><input type="text"  name="update-organization" value={{ contact.organization }}></td>
+                    <td><input type="text"  name="update-description" value={{ contact.description }}></td>
+                    <td><input type="text"  name="update-email" value={{ contact.email }}></td>
+                    <td><button type="submit" name="new" value={{ contact.id }} class="btn btn-success btn-block btn-xs"><i class="fa fa-check" aria-hidden="true"></i></button></td>
+                    <td><a href="/phones" class="btn  btn-block btn-xs"><i class="fa fa-times-circle-o" aria-hidden="true"></i></a></td>
                     </form>
                 </tr>
                 {% else %}
@@ -92,8 +95,8 @@
                     <td><button type="submit" class="btn btn-link" name="q" value={{ contact.organization }}>{{ contact.organization }}</td>
                     <td class="col-md-7">{{ contact.description }}</td>
                     <td>{{ contact.email }}</td>
-                    <td><button type="submit" name="edit" value={{ contact.id }} class="btn btn-warning btn-block btn-xs"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Редактировать</button></td>
-                    <td><button type="submit" name="del" value={{ contact.id }} class="btn btn-danger btn-block btn-xs" onclick="return confirm('Are you sure?')"><i class="fa fa-trash-o fa-lg"></i> Удалить</button></td>
+                    <td><button type="submit" name="edit" value={{ contact.id }} class="btn btn-warning btn-block btn-xs"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></td>
+                    <td><button type="submit" name="del" value={{ contact.id }} class="btn btn-danger btn-block btn-xs" onclick="return confirm('Are you sure?')"><i class="fa fa-trash-o fa-lg"></i></button></td>
                 </tr>
                 {% endif %}
                 {% endfor %}
