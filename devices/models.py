@@ -29,6 +29,7 @@ DEVICE_MODELS_CHOICES = (
 )
 
 PORTS_NUMBER = (
+    (5, '5'),
     (8, '8'),
     (10, '10'),
     (16, '16'),
