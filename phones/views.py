@@ -5,6 +5,8 @@ from nettools.forms import ContactForm
 
 def display_phone_book(request):
     added = False
+    edit = False
+    edit_id = False
     err = False
     if request.method == 'POST':
         print('Info: Request method POST')
@@ -23,9 +25,31 @@ def display_phone_book(request):
             err = contacts
     else:
         print('Info: Request method GET')
+        if 'edit' in request.GET:
+            edit_id = request.GET['edit']
+            print('Info: Trying to edit "{}" from Contact DB.'.format(edit_id))
+            try:
+                instance = Contact.objects.get(id=edit_id)
+            except Exception as e:
+                print('Error: "{}" can not be edited.'.format(edit))
+                print('Error: {}'.format(e))
+        if 'new' in request.GET:
+            new_id = request.GET['new']
+            instance = Contact.objects.get(id=new_id)
+            contacts = ContactForm(request.GET, prefix='update', instance=instance)
+            if contacts.is_valid():
+                print('Info: Contact Form is valid')
+                try:
+                    contacts.save()
+                    print('Info: Contact {} updated'.format(instance))
+                except Exception as e:
+                    print('Error: Contact data has not been saved in Contact DB.')
+            else:
+                print('Error: Contact Form is not valid')
+                print(contacts.errors)
+                err = contacts
         if 'del' in request.GET:
             d = request.GET['del']
-            print(d)
             print('Info: Trying to delete "{}" from Contact DB.'.format(d))
             try:
                 Contact.objects.filter(id=d).delete()
@@ -41,4 +65,5 @@ def display_phone_book(request):
                 return render(request, 'phones.html', {'contacts': contacts})
     contacts = Contact.objects.all().order_by('organization')
     print('Info: Default output.')
-    return render(request, 'phones.html', {'contacts':contacts, 'added':added, 'err':err})
+    print(edit_id)
+    return render(request, 'phones.html', {'contacts':contacts, 'added':added, 'err':err, 'edit':edit, 'edit_id':edit_id})
