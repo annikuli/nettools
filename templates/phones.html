@@ -20,16 +20,18 @@
                     <th><p>Телефон</p></th>
                     <th><p>Сотрудник</p></th>
                     <th><p>Организация</p></th>
-                    <th><p>E-Mail</p></th>
+
                     <th><p>Комментарий</p></th>
+                    <th><p>E-Mail</p></th>
                 </tr>
                 {% for contact in contacts %}
                 <tr>
-                    <td>{{ contact.phone_number}}</td>
-                    <td>{{ contact.name }}</td>
+                    <td class="col-md-1">{{ contact.phone_number}}</td>
+                    <td class="col-md-2">{{ contact.name }}</td>
                     <td><button type="submit" class="btn btn-link" name="q" value={{ contact.organization }}>{{ contact.organization }}</td>
+
+                    <td class="col-md-7">{{ contact.description }}</td>
                     <td>{{ contact.email }}</td>
-                    <td>{{ contact.description }}</td>
                 </tr>
                 {% endfor %}
                 </tbody>
