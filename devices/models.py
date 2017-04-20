@@ -16,6 +16,8 @@ DEVICE_MODELS_CHOICES = (
     ('d1200', 'D-Link 1200'),
     ('d3200', 'D-Link 3200'),
     ('d3500', 'D-Link 3500'),
+    ('rb750', 'Mikrotik RB750'),
+    ('rb951', 'Mikrotik RB951'),
     ('m408', 'Moxa 408'),
     ('m6527', 'Moxa 6527'),
     ('q2800', 'Q-tech 2800'),
