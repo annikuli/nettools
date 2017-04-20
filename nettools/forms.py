@@ -31,7 +31,7 @@ class DeviceForm(forms.ModelForm):
         model = Device
         fields = ['hostname', 'ip', 'addition_date', 'model', 'ports', 'po', 'purchase', 'description']
         widgets = {
-            'addition_date': SelectDateWidget(empty_label="Nothing"),
+            'addition_date': SelectDateWidget(empty_label="Nothing")
         }
 
 
