@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from zabbix.views import add_host
-from devices.views import generate_config, display_db, create_device
+from devices.views import generate_config, display_db, create_device, wiki_redirect
 from vsi.views import display_all_vsi
 from phones.views import display_phone_book
 
@@ -29,5 +29,6 @@ urlpatterns = [
     url(r'^$', display_db),
     url(r'^create/$', create_device),
     url(r'^vsi/$', display_all_vsi),
-    url(r'^phones/$', display_phone_book)
+    url(r'^phones/$', display_phone_book),
+    url(r'^syslog/$', wiki_redirect)
 ]

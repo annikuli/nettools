@@ -1,5 +1,5 @@
 from django.db import IntegrityError
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from nettools.forms import AccessSwitchForm, AccessSwitchConfigForm, ZabbixForm, DeviceForm
 from zabbix.zabbix_api_methods import zabbix_add_host
 from django.core.mail import send_mail
@@ -175,3 +175,7 @@ def display_db(request):
         print('Info: Default output.')
 
     return render(request, 'list.html', {'devices': devices, 'last_ordering': last_ordering})
+
+
+def wiki_redirect(request):
+    return redirect('http://10.62.9.100:81/wiki/index.php/')
