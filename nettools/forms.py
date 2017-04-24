@@ -40,7 +40,7 @@ class VsiForm(forms.ModelForm):
         model = Vsi
         fields = ['name', 'vsi_id', 'switch', 'description', 'addition_date']
         widgets = {
-            'addition_date': SelectDateWidget(empty_label="Nothing"),
+            'addition_date': SelectDateWidget(empty_label="Nothing")
         }
 
 

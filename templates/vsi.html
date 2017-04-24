@@ -2,43 +2,153 @@
 
 {% block title %}Vsi {% endblock%}
 
+{% block error_block %}
+{% if err %}
+        <div class="alert alert-danger">
+            <strong>Error!</strong> Please correct the error{{ err.errors|pluralize }} below.
+            {% for field in err %}
+              {% if field.errors %}
+                {% for error in field.errors %}
+                  <li>{{ field.name }} - {{ error|escape }}</li>
+                {% endfor %}
+              {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+
+{% endblock %}
+
 
 {% block content %}
+        {% if added %}
+            <div class="alert alert-success">
+                <strong>Success!</strong> VSI добавлен.
+            </div>
+        {% endif %}
 
 <div class="container">
     <h2>VSI</h2>
+    <div class="col-sm-5">
+    <button id="flip" type="button" class="btn btn-default btn-block">Создать VSI <i class="fa fa-angle-down" aria-hidden="true"></i></button>
+    <div id="panel">
+        <form action="" method="post">
+            <label for="addition_date">Дата добавления:</label>
+            <p id="addition_date">{{ vsi_form.addition_date }} </p>
+            <label for="name">Название:</label>
+            <input type="text" class="form-control" id="name" name="vsi_form-name">
+            <label for="vsi_id">ID:</label>
+            <input type="text" class="form-control" id="vsi_id" name="vsi_form-vsi_id">
+            <label for="description">Комментарий:</label>
+            <textarea type="text" class="form-control" raws="3" id="description" name="vsi_form-description"></textarea>
+            <label for="switch">Коммутаторы:</label>
+            <p>{{ vsi_form.switch }}</p>
+            <br>
+            <p class="bg-info">Не обязательно заполнять все поля</p>
+            <br>
+            <button type="submit" class="btn btn-success btn-block">Создать</button>
+      </div>
     </div>
+            </div>
+
+            {% csrf_token %}
+        </form>
+    </div>
+
+
     <br>
     <div class="row">
         <div class="col-sm-2">
         </div>
-        <div class="col-md-8">
+        <div class="col-md-9">
+            <form action="" method="get">
             <table class="table table-hover table-condensed">
                 <thead>
                 <tr>
-                    <th><p>Addition Date</p></th>
-                    <th><p>Name</p></th>
+                    <th><p>Дата добавления</p></th>
+                    <th><p>Название</p></th>
                     <th><p>ID</p></th>
-                    <th><p>Description</p></th>
-                    <th><p>Switches</p></th>
+                    <th><p>Комментарий</p></th>
+                    <th><p>Коммутаторы</p></th>
+                    <th></th>
+                    <th></th>
                 </tr>
+                </thead>
                 {% for vsi in vsis %}
+                <tbody>
+                {% if vsi.id|slugify == edit_id|slugify %}
                 <tr>
-                    <td>{{ vsi.addition_date }}</td>
-                    <td>{{ vsi.name }}</td>
-                    <td>{{ vsi.vsi_id |stringformat:"04d"}}</td>
-                    <td>{{ vsi.description }}</td>
+                    <form action="" method="post">
                     <td>
-                    <ul>
+                        <input type="text" class="form-control" name="update-addition_date" value="{{ vsi.addition_date |date:"Y-m-d" }}">
+                    </td>
+                    <td><input type="text" class="form-control" name="update-name" value={{ vsi.name }}></td>
+                    <td><input type="text" class="form-control" name="update-vsi_id" value={{ vsi.vsi_id }}></td>
+                    <td><input type="text" class="form-control" name="update-description" value="{{ vsi.description }}"></td>
+                    <td>
+                        <p id="switch">
+                            <select multiple="multiple" class="form-control" id="id_vsi-switch" name="update-switch" required>
+                                {% for switch in devices %}
+                                <option value={{ switch.id }}>{{ switch.hostname }}</option>
+                                {% endfor %}
+                            </select>
+                        </p>
+                    </td>
+                    <td><button type="submit" name="new" value={{ vsi.id }} class="btn btn-success btn-block btn-xs"><i class="fa fa-check" aria-hidden="true"></i></button></td>
+                    <td><a href="/vsi" class="btn  btn-block btn-xs"><i class="fa fa-times-circle-o" aria-hidden="true"></i></a></td>
+                    </form>
+                </tr>
+                {% else %}
+                <tr>
+                    <td class="col-md-1">{{ vsi.addition_date }}</td>
+                    <td class="col-md-2">{{ vsi.name }}</td>
+                    <td class="col-md-2">{{ vsi.vsi_id |stringformat:"04d" }}</td>
+                    <td class="col-md-3">{{ vsi.description }}</td>
+                    <td>
+                        <ul>
                         {% for switch in vsi.switch.all %}
-                        <li>{{ switch }}</li>
-                    {% endfor %}
+                        <li><button type="submit" class="btn btn-link" name="q" value={{ switch.hostname }}>{{ switch.hostname }}</li>
+                        {% endfor %}
                     </ul>
                     </td>
+                    <td><button type="submit" name="edit" value={{ vsi.id }} class="btn btn-warning btn-block btn-xs"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></td>
+                    <td><button type="submit" name="del" value={{ vsi.id }} class="btn btn-danger btn-block btn-xs" onclick="return confirm('Are you sure?')"><i class="fa fa-trash-o fa-lg"></i></button></td>
                 </tr>
+                {% endif %}
                 {% endfor %}
                 </tbody>
             </table>
+            </form>
         </div>
     </div>
+
+
+
+
+
+<script>
+$(document).ready(function(){
+    $("#flip").click(function(){
+        $("#panel").slideToggle("slow");
+    });
+});
+</script>
+
+<script type="text/javascript">
+    $('#id_vsi_form-switch').multiselect();
+</script>
+
+<style>
+#panel, #flip {
+    padding: 5px;
+    <!--text-align: center;-->
+    <!--background-color: #e5eecc;-->
+    <!--border: solid 1px #c3c3c3;-->
+}
+
+#panel {
+    padding: 50px;
+    display: none;
+}
+</style>
+
 {% endblock %}
