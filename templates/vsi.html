@@ -28,6 +28,7 @@
 
 <div class="container">
     <h2>VSI</h2>
+
     <div class="col-sm-5">
     <button id="flip" type="button" class="btn btn-default btn-block">Создать VSI <i class="fa fa-angle-down" aria-hidden="true"></i></button>
     <div id="panel">
@@ -88,11 +89,16 @@
                         <p id="switch">
                             <select multiple="multiple" class="form-control" id="id_vsi-switch" name="update-switch" required>
                                 {% for switch in devices %}
-                                <option value={{ switch.id }}>{{ switch.hostname }}</option>
+                                    {% if switch in vsi.switch.all %}
+                                        <option value={{ switch.id }} selected="selected">{{ switch.hostname }}</option>
+                                    {% else %}
+                                        <option value={{ switch.id }}>{{ switch.hostname }}</option>
+                                    {% endif %}
                                 {% endfor %}
                             </select>
                         </p>
                     </td>
+
                     <td><button type="submit" name="new" value={{ vsi.id }} class="btn btn-success btn-block btn-xs"><i class="fa fa-check" aria-hidden="true"></i></button></td>
                     <td><a href="/vsi" class="btn  btn-block btn-xs"><i class="fa fa-times-circle-o" aria-hidden="true"></i></a></td>
                     </form>
@@ -135,6 +141,7 @@ $(document).ready(function(){
 
 <script type="text/javascript">
     $('#id_vsi_form-switch').multiselect();
+    $('#id_vsi-switch').multiselect();
 </script>
 
 <style>
