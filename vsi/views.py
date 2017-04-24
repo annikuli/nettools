@@ -67,8 +67,26 @@ def display_all_vsi(request):
                 # vsis = Vsi.objects.filter(switch__icontains=search)
                 return render(request, 'vsi.html', {'vsis': vsis})
     vsis = Vsi.objects.all().order_by('name')
+    v = []
+    for vsi in vsis:
+        v.append(vsi.vsi_id)
+    first_allowed_vsi_id = find_allowed_vsi_id(v)
     devices = Device.objects.all().order_by('hostname')
     vsi_form = VsiForm(prefix='vsi_form')
     print('Info: Default output.')
     print(edit_id)
-    return render(request, 'vsi.html', {'vsis':vsis, 'added':added, 'err':err, 'edit':edit, 'edit_id':edit_id, 'devices': devices, 'vsi_form': vsi_form})
+    return render(request, 'vsi.html', {'vsis':vsis,
+                                        'added':added,
+                                        'err':err,
+                                        'edit':edit,
+                                        'edit_id':edit_id,
+                                        'devices': devices,
+                                        'vsi_form': vsi_form,
+                                        'first_allowed_vsi_id': first_allowed_vsi_id})
+
+
+def find_allowed_vsi_id(vsi_ids):
+    for i in range(1,len(vsi_ids)+1):
+        if i != sorted(vsi_ids)[i-1]:
+            return i
+    return len(vsi_ids)+1

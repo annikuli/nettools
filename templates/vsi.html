@@ -35,9 +35,9 @@
             <label for="addition_date">Дата добавления:</label>
             <p id="addition_date">{{ vsi_form.addition_date }} </p>
             <label for="name">Название:</label>
-            <input type="text" class="form-control" id="name" name="vsi_form-name">
+            <input type="text" class="form-control" id="name" value=lan_{{ first_allowed_vsi_id |stringformat:"04d" }} name="vsi_form-name">
             <label for="vsi_id">ID:</label>
-            <input type="text" class="form-control" id="vsi_id" name="vsi_form-vsi_id">
+            <input type="text" class="form-control" id="vsi_id" value={{ first_allowed_vsi_id |stringformat:"04d" }} name="vsi_form-vsi_id">
             <label for="description">Комментарий:</label>
             <textarea type="text" class="form-control" raws="3" id="description" name="vsi_form-description"></textarea>
             <label for="switch">Коммутаторы:</label>
