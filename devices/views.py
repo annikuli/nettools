@@ -3,11 +3,11 @@ from django.shortcuts import render, redirect
 from nettools.forms import AccessSwitchForm, AccessSwitchConfigForm, ZabbixForm, DeviceForm
 from zabbix.zabbix_api_methods import zabbix_add_host
 from django.core.mail import send_mail
-
+import xlwt
 from .generator import generator
 from .models import AccessSwitch, AccessSwitchConfig, Device
 from secrets.secrets import ZABBIX_EMAIL_DESTINATIONS, ZABBIX_EMAIL_SOURCE
-
+from django.http import HttpResponse
 
 def create_device(request):
     added = False
@@ -179,3 +179,39 @@ def display_db(request):
 
 def wiki_redirect(request):
     return redirect('http://10.62.9.100:81/wiki/index.php/')
+
+
+def export_devices_xls(request):
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="devices.xls"'
+
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet('Devices')
+
+    # Sheet header, first row
+    row_num = 0
+
+    font_style = xlwt.XFStyle()
+    font_style.font.bold = True
+
+    columns = ['Дата добавления', 'ПО', 'Hostname', 'IP', 'Модель', 'Количество портов', 'Закупка', 'Комментарий',]
+
+    for col_num in range(len(columns)):
+        ws.write(row_num, col_num, columns[col_num], font_style)
+
+    # Sheet body, remaining rows
+    font_style = xlwt.XFStyle()
+    date_style = xlwt.XFStyle()
+    date_style.num_format_str = 'dd/mm/yyyy'
+
+    rows = Device.objects.all().values_list('addition_date', 'po', 'hostname', 'ip', 'model', 'ports', 'purchase', 'description')
+    for row in rows:
+        row_num += 1
+        for col_num in range(len(row)):
+            if col_num == 0:
+                ws.write(row_num, col_num, row[col_num], date_style)
+            else:
+                ws.write(row_num, col_num, row[col_num], font_style)
+
+    wb.save(response)
+    return response
