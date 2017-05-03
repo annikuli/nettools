@@ -30,7 +30,7 @@ urlpatterns = [
     url(r'^create/$', create_device),
     url(r'^vsi/$', display_all_vsi),
     url(r'^phones/$', display_phone_book),
-    url(r'^syslog/$', wiki_redirect),
+    url(r'^wiki/$', wiki_redirect),
     url(r'^phones/export/xls/$', export_phones_xls),
     url(r'^list/export/xls/$', export_devices_xls),
     url(r'^vsi/export/xls/$', export_vsi_xls)

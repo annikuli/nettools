@@ -5,6 +5,7 @@ from devices.models import Device
 import xlwt
 from django.http import HttpResponse
 
+
 def display_all_vsi(request):
     added = False
     edit = False
@@ -127,3 +128,5 @@ def export_vsi_xls(request):
 
     wb.save(response)
     return response
+
+
